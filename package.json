@@ -23,7 +23,7 @@
   },
   "build": {
     "productName": "my-account-manager",
-    "appId": "org.simulatedgreg.electron-vue",
+    "appId": "fr.bellingard.my-account-manager",
     "directories": {
       "output": "build"
     },
