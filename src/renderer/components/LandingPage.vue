@@ -79,6 +79,7 @@
           <v-flex xs6 offset-xs3>
             <v-card>
               <img v-bind:src="imageUrl"/>
+              {{ accountContent }}
             </v-card>
           </v-flex>
         </v-layout>
@@ -102,6 +103,13 @@
   //   }
   // }
 
+  import { remote } from 'electron'
+  import path from 'path'
+  import * as jsonfile from 'jsonfile'
+
+  let homeDir = remote.app.getPath('home')
+  let accountStorage = path.join(homeDir, 'Repos/_PERSO_/_resources_/some-tests/Comptes.json')
+
   export default {
     data () {
       return {
@@ -112,7 +120,8 @@
         ],
         mini: false,
         right: null,
-        imageUrl: 'static/images/electron.png'
+        imageUrl: 'static/images/electron.png',
+        accountContent: jsonfile.readFileSync(accountStorage)
       }
     }
   }
