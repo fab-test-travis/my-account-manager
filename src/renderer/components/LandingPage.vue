@@ -77,7 +77,9 @@
       <v-container fluid fill-height>
         <v-layout>
           <v-flex xs6 offset-xs3>
-            <v-card height="200px"></v-card>
+            <v-card>
+              <img v-bind:src="imageUrl"/>
+            </v-card>
           </v-flex>
         </v-layout>
         <!--v-router-->
@@ -109,7 +111,8 @@
           { title: 'About', icon: 'question_answer' }
         ],
         mini: false,
-        right: null
+        right: null,
+        imageUrl: 'static/images/electron.png'
       }
     }
   }
