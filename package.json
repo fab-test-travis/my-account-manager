@@ -21,7 +21,7 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "my-account-manager",
+    "productName": "My Account Manager",
     "appId": "fr.bellingard.my-account-manager",
     "directories": {
       "output": "build"
