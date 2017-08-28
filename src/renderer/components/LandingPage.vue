@@ -25,7 +25,14 @@
     <v-toolbar class="blue darken-4">
       <v-toolbar-title>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-icon>file_upload</v-icon>
+        <v-btn
+          :loading="loading"
+          @click.native="loader = 'loading'"
+          :disabled="loading"
+        >
+          Load
+          <v-icon right>file_upload</v-icon>
+        </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-title>My Account Manager -</v-toolbar-title>
@@ -37,6 +44,16 @@
           <div>
             Hello world!
           </div>
+          <v-list v-if="repository" two-line>
+            <template v-for="account in repository.bankAccounts">
+              <v-list-tile v-bind:key="account.accountNumber">
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="account.accountNumber"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="account.name"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
       </v-container>
     </main>
 
@@ -47,6 +64,9 @@
 </template>
 
 <script>
+  import StorageService from '../services/StorageService'
+
+  const storageService = new StorageService()
 
   export default {
     name: 'landing-page',
@@ -54,11 +74,30 @@
       return {
         drawer: true,
         mini: false,
+        loader: null,
+        loading: false,
         items: [
           { icon: 'trending_up', text: 'Dashboard' },
           { icon: 'system_update', text: 'Update Accounts' },
           { icon: 'settings', text: 'Settings' }
-        ]
+        ],
+        repository: null
+      }
+    },
+    watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        storageService.loadFromJson('', (err, obj) => {
+          if (err) {
+            console.error(err)
+          } else {
+            this.repository = storageService.repo
+          }
+          this[l] = false
+          this.loader = null
+        })
       }
     }
   }
