@@ -9,6 +9,14 @@
       v-model="drawer"
     >
       <v-list dense>
+        <v-select
+          v-if="repository"
+          :items="accounts"
+          v-model="selectedAccount"
+          label="Select account"
+          item-text="name"
+          item-value="accountNumber"
+        ></v-select>
         <v-list-tile v-for="item in items" :key="item.text">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -46,7 +54,7 @@
           </div>
           <v-list v-if="repository" two-line>
             <template v-for="account in repository.bankAccounts">
-              <v-list-tile v-bind:key="account.accountNumber">
+              <v-list-tile :key="account.accountNumber">
                 <v-list-tile-content>
                   <v-list-tile-title v-html="account.accountNumber"></v-list-tile-title>
                   <v-list-tile-sub-title v-html="account.name"></v-list-tile-sub-title>
@@ -64,6 +72,7 @@
 </template>
 
 <script>
+  import * as _ from 'lodash'
   import StorageService from '../services/StorageService'
 
   const storageService = new StorageService()
@@ -81,7 +90,13 @@
           { icon: 'system_update', text: 'Update Accounts' },
           { icon: 'settings', text: 'Settings' }
         ],
-        repository: null
+        repository: null,
+        selectedAccount: null
+      }
+    },
+    computed: {
+      accounts () {
+        return _.values(this.repository.bankAccounts)
       }
     },
     watch: {
