@@ -3,37 +3,67 @@
   <v-app dark>
 
      <v-navigation-drawer
-      class="pb-0"
       permanent
-      clipped
       :mini-variant.sync="mini"
     >
+      <div class="pa-3 mt-3 mb-3">
+        <v-toolbar-title>
+          My Account Manager
+          <v-icon>monetization_on</v-icon>
+        </v-toolbar-title>
+        <div class="text-xs-center">Version x.x</div>
+      </div>
+
+      <v-divider></v-divider>
+
       <v-list dense>
-        <v-select
-          v-if="repository"
-          :items="accounts"
-          v-model="selectedAccount"
-          label="Select account"
-          item-text="name"
-          item-value="accountNumber"
-        ></v-select>
-        <v-list-tile v-for="item in items" :key="item.text">
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>dashboard</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Dashboards
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
+      <v-subheader class="mt-2 grey--text text--darken-1">MANAGE</v-subheader>
+      <v-list dense>
+        <v-list-tile v-for="item in manageItems" :key="item.text">
           <v-list-tile-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title>
-              {{ item.text }} 
+              {{ item.text }}
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
       </v-list>
+
+      <v-subheader class="mt-2 grey--text text--darken-1">ADMIN</v-subheader>
+      <v-list dense>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>settings</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>
+              Settings
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
     </v-navigation-drawer>
     
-    <v-toolbar class="blue darken-4">
+    <v-toolbar fixed class="blue darken-1">
       <v-toolbar-title>
         <v-toolbar-side-icon @click.stop="mini = !mini"></v-toolbar-side-icon>
         <v-btn
+          class="grey darken-3"
           :loading="loading"
           @click.native="loader = 'loading'"
           :disabled="loading"
@@ -43,21 +73,25 @@
         </v-btn>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-title>My Account Manager -</v-toolbar-title>
-      <v-icon>monetization_on</v-icon>
+      <v-icon>help</v-icon>
     </v-toolbar>
 
     <main>
       <v-container fluid>
-          <div>
-            Hello world!
-          </div>
-          <v-list v-if="repository" two-line>
-            <template v-for="account in repository.bankAccounts">
-              <v-list-tile :key="account.accountNumber">
+          <v-select
+            :disabled="repository == null"
+            :items="accounts"
+            v-model="selectedAccount"
+            label="Select account"
+            item-text="name"
+            item-value="id"
+          ></v-select>
+          <v-list v-if="selectedAccount" two-line>
+            <template v-for="transaction in transactions">
+              <v-list-tile :key="transaction.id">
                 <v-list-tile-content>
-                  <v-list-tile-title v-html="account.accountNumber"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="account.name"></v-list-tile-sub-title>
+                  <v-list-tile-title v-html="transaction.amount"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="transaction.date"></v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
@@ -84,18 +118,32 @@
         mini: false,
         loader: null,
         loading: false,
-        items: [
-          { icon: 'trending_up', text: 'Dashboard' },
-          { icon: 'system_update', text: 'Update Accounts' },
-          { icon: 'settings', text: 'Settings' }
-        ],
         repository: null,
-        selectedAccount: null
+        selectedAccount: null,
+        manageItems: [
+          { icon: 'attach_money', text: 'Accounts' },
+          { icon: 'group_work', text: 'Categories' },
+          { icon: 'account_balance', text: 'Institutions' },
+          { icon: 'people', text: 'Payees' }
+        ]
       }
     },
     computed: {
       accounts () {
-        return _.values(this.repository.bankAccounts)
+        return this.repository ? _.values(this.repository.bankAccounts) : []
+      },
+      transactions () {
+        if (this.selectedAccount == null) {
+          return []
+        }
+        let tList = []
+        // couldn't manage to use lodash here... :-(
+        _.values(this.repository.transactions).forEach(t => {
+          if (this.selectedAccount === t.fromId || this.selectedAccount === t.toId) {
+            tList.push(t)
+          }
+        })
+        return tList
       }
     },
     watch: {
