@@ -4,9 +4,9 @@
 
      <v-navigation-drawer
       class="pb-0"
-      persistent
+      permanent
       clipped
-      v-model="drawer"
+      :mini-variant.sync="mini"
     >
       <v-list dense>
         <v-select
@@ -32,7 +32,7 @@
     
     <v-toolbar class="blue darken-4">
       <v-toolbar-title>
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon @click.stop="mini = !mini"></v-toolbar-side-icon>
         <v-btn
           :loading="loading"
           @click.native="loader = 'loading'"
@@ -81,7 +81,6 @@
     name: 'landing-page',
     data () {
       return {
-        drawer: true,
         mini: false,
         loader: null,
         loading: false,
