@@ -1,5 +1,7 @@
 {
     "editor.tabSize": 2,
     "prettier.semi": false,
-    "prettier.singleQuote": true
+    "prettier.singleQuote": true,
+    "vetur.format.js.InsertSpaceBeforeFunctionParenthesis": true,
+    "vetur.format.html.wrap_attributes": "force-expand-multiline"
 }
