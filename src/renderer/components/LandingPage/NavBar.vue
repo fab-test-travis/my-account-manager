@@ -1,8 +1,6 @@
 <template>
-  <v-navigation-drawer
-    permanent
-    :mini-variant.sync="mini"
-  >
+  <v-navigation-drawer permanent
+                       :mini-variant.sync="mini">
 
     <div :class="miniIconStyle">
       <v-toolbar-side-icon @click.stop="mini = !mini">
@@ -18,9 +16,8 @@
     </div>
 
     <v-divider></v-divider>
-
     <v-list dense>
-      <v-list-tile>
+      <v-list-tile to="/dashboards">
         <v-list-tile-action>
           <v-icon>dashboard</v-icon>
         </v-list-tile-action>
@@ -34,10 +31,9 @@
 
     <v-subheader class="mt-2 grey--text text--darken-1">MANAGE</v-subheader>
     <v-list dense>
-      <v-list-tile
-        v-for="item in manageItems"
-        :key="item.text"
-      >
+      <v-list-tile v-for="item in manageItems"
+                   :key="item.text"
+                   :to="item.to">
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
@@ -46,12 +42,12 @@
             {{ item.text }}
           </v-list-tile-title>
         </v-list-tile-content>
-        </v-list-tile>
+      </v-list-tile>
     </v-list>
 
     <v-subheader class="mt-2 grey--text text--darken-1">ADMIN</v-subheader>
     <v-list dense>
-      <v-list-tile>
+      <v-list-tile to="/settings">
         <v-list-tile-action>
           <v-icon>settings</v-icon>
         </v-list-tile-action>
@@ -63,26 +59,26 @@
       </v-list-tile>
     </v-list>
 
-    </v-navigation-drawer>
+  </v-navigation-drawer>
 </template>
 
 <script>
 
 export default {
   name: 'nav-bar',
-  data () {
+  data() {
     return {
       mini: false,
       manageItems: [
-        { icon: 'attach_money', text: 'Accounts' },
-        { icon: 'group_work', text: 'Categories' },
-        { icon: 'account_balance', text: 'Institutions' },
-        { icon: 'people', text: 'Payees' }
+        { icon: 'attach_money', text: 'Accounts', to: 'accounts' },
+        { icon: 'group_work', text: 'Categories', to: 'categories' },
+        { icon: 'account_balance', text: 'Institutions', to: 'institutions' },
+        { icon: 'people', text: 'Payees', to: 'payees' }
       ]
     }
   },
   computed: {
-    miniIconStyle () {
+    miniIconStyle() {
       return this.mini ? 'text-xs-center' : ''
     }
   }

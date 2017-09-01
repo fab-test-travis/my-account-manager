@@ -7,8 +7,25 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'landing-page',
-      component: require('@/components/LandingPage')
+      component: require('@/components/LandingPage'),
+      children: [
+        {
+          path: '/',
+          component: require('@/components/LandingPage/PageDashboard')
+        },
+        {
+          path: 'dashboards',
+          component: require('@/components/LandingPage/PageDashboard')
+        },
+        {
+          path: 'accounts',
+          component: require('@/components/LandingPage/PageAccounts')
+        },
+        {
+          path: 'settings',
+          component: require('@/components/LandingPage/PageSettings')
+        }
+      ]
     },
     // And the default routes
     {
