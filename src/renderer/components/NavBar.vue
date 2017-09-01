@@ -7,12 +7,8 @@
       </v-toolbar-side-icon>
     </div>
 
-    <div class="pa-3 mt-3 mb-3">
-      <v-toolbar-title>
-        My Account Manager
-        <v-icon>monetization_on</v-icon>
-      </v-toolbar-title>
-      <div class="text-xs-center">Version x.x</div>
+    <div class="pa-3 text-xs-center">
+      <img src="../assets/logo.png" :width="logoWidth"/>
     </div>
 
     <v-divider></v-divider>
@@ -80,6 +76,9 @@ export default {
   computed: {
     miniIconStyle() {
       return this.mini ? 'text-xs-center' : ''
+    },
+    logoWidth() {
+      return this.mini ? '40px' : '100px'
     }
   }
 }

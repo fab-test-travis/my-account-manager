@@ -5,15 +5,14 @@
     <v-toolbar fixed
                class="blue darken-1">
       <v-toolbar-title>
-        <v-btn class="grey darken-3"
-               :loading="loading"
-               @click.native="loader = 'loading'"
-               :disabled="loading">
-          Load
-          <v-icon right>file_upload</v-icon>
-        </v-btn>
+        My Account Manager
+        <v-icon>monetization_on</v-icon>
       </v-toolbar-title>
       <v-spacer></v-spacer>
+      <v-btn icon
+             to="/">
+        <v-icon>home</v-icon>
+      </v-btn>
       <v-icon>help</v-icon>
 
     </v-toolbar>
@@ -27,27 +26,7 @@ import NavBar from './NavBar'
 
 export default {
   name: 'landing-page',
-  components: { NavBar },
-  data() {
-    return {
-      loader: null,
-      loading: false
-    }
-  },
-  watch: {
-    loader() {
-      const l = this.loader
-      this[l] = !this[l]
-
-      this.$storage.loadFromJson('', (err, obj) => {
-        if (err) {
-          console.error(err)
-        }
-        this[l] = false
-        this.loader = null
-      })
-    }
-  }
+  components: { NavBar }
 }
 
 </script>
