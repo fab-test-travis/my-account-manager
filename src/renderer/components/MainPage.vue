@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import NavBar from './LandingPage/NavBar'
+import NavBar from './NavBar'
 
 export default {
   name: 'landing-page',

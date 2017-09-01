@@ -7,23 +7,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: require('@/components/LandingPage'),
+      component: require('@/components/MainPage'),
       children: [
         {
           path: '/',
-          component: require('@/components/LandingPage/PageDashboard')
+          component: require('@/components/pages/Dashboard')
         },
         {
           path: 'dashboards',
-          component: require('@/components/LandingPage/PageDashboard')
+          component: require('@/components/pages/Dashboard')
         },
         {
           path: 'accounts',
-          component: require('@/components/LandingPage/PageAccounts')
+          component: require('@/components/pages/Accounts')
         },
         {
           path: 'settings',
-          component: require('@/components/LandingPage/PageSettings')
+          component: require('@/components/pages/Settings')
         }
       ]
     },
