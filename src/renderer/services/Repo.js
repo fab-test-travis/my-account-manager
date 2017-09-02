@@ -10,23 +10,23 @@ export default class Repo {
   }
 
   institutions() {
-    return this.storage.repo.institutions
+    return _.values(this.storage.repo.institutions)
   }
 
   payees() {
-    return this.storage.repo.payees
+    return _.values(this.storage.repo.payees)
   }
 
   bankAccounts() {
-    return this.storage.repo.bankAccounts
+    return _.values(this.storage.repo.bankAccounts)
   }
 
   categories() {
-    return this.storage.repo.categories
+    return _.values(this.storage.repo.categories)
   }
 
   transactions() {
-    return this.storage.repo.transactions
+    return _.values(this.storage.repo.transactions)
   }
 
   getAccountBalance(accountId) {
