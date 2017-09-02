@@ -14,7 +14,7 @@ export default class Storage {
 
     // this.repo = jsonfile.readFileSync(filePath, 'UTF-8')
     jsonfile.readFile(
-      '/Users/bellingard/Repos/_PERSO_/typescript-test/resources/comptes.json',
+      '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json',
       'UTF-8',
       (err, obj) => {
         if (!err) {
