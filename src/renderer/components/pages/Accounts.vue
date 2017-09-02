@@ -1,36 +1,52 @@
 <template>
   <main>
     <v-container fluid>
-      <v-select :disabled="!this.$repo.isLoaded()"
-                :items="accounts"
-                v-model="selectedAccount"
-                label="Select account"
-                item-text="name"
-                item-value="id">
-      </v-select>
+      <v-layout row
+                wrap>
+        <v-flex xs8>
+          <v-select :disabled="!this.$repo.isLoaded()"
+                    :items="accounts"
+                    v-model="selectedAccount"
+                    label="Select account"
+                    item-text="name"
+                    item-value="id">
+          </v-select>
+        </v-flex>
 
-      <v-data-table :headers="headers"
-                    :items="transactions"
-                    :rows-per-page-items="pagination"
-                    class="elevation-1">
-        <template slot="items"
-                  scope="props">
-          <td>{{ props.item.id }}</td>
-          <td class="text-xs-right">{{ props.item.date }}</td>
-          <td class="text-xs-right">{{ props.item.amount }}</td>
-          <td class="text-xs-right">{{ props.item.fromId }}</td>
-          <td class="text-xs-right">{{ props.item.toId }}</td>
-          <td class="text-xs-right">{{ props.item.payeeId }}</td>
-          <td class="text-xs-right">{{ props.item.desc }}</td>
-        </template>
-      </v-data-table>
+        <v-flex xs4>
+          <v-text-field append-icon="search"
+                        label="Search"
+                        single-line
+                        hide-details
+                        v-model="search"
+                        class="">
+          </v-text-field>
+        </v-flex>
+
+        <v-data-table :headers="headers"
+                      :items="transactions"
+                      :rows-per-page-items="pagination.size"
+                      :pagination.sync="pagination.sort"
+                      :search="search"
+                      class="elevation-1">
+          <template slot="items"
+                    scope="props">
+            <td>{{ props.item.id }}</td>
+            <td class="text-xs-right">{{ props.item.date }}</td>
+            <td class="text-xs-right">{{ props.item.amount }}</td>
+            <td class="text-xs-right">{{ props.item.fromId }}</td>
+            <td class="text-xs-right">{{ props.item.toId }}</td>
+            <td class="text-xs-right">{{ props.item.payeeId }}</td>
+            <td class="text-xs-right">{{ props.item.desc }}</td>
+          </template>
+        </v-data-table>
+
+      </v-layout>
     </v-container>
   </main>
 </template>
 
 <script>
-import * as _ from 'lodash'
-
 export default {
   name: 'page-accounts',
   data() {
@@ -50,7 +66,14 @@ export default {
         { text: 'Payee', value: 'payeeId' },
         { text: 'Description', value: 'desc' }
       ],
-      pagination: [25, 50, 100],
+      pagination: {
+        size: [25, 50, 100],
+        sort: {
+          sortBy: 'date',
+          descending: true
+        }
+      },
+      search: '',
       items: this.selectedAccount ? this.$repo.bankAccounts() : []
     }
   },
@@ -64,7 +87,7 @@ export default {
       }
       let tList = []
       // couldn't manage to use lodash here... :-(
-      _.values(this.$repo.transactions()).forEach(t => {
+      this.$repo.transactions().forEach(t => {
         if (this.selectedAccount === t.fromId || this.selectedAccount === t.toId) {
           tList.push(t)
         }

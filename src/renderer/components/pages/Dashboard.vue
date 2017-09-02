@@ -1,19 +1,21 @@
 <template>
   <main>
-    <v-data-table v-bind:headers="headers"
-                  :items="items"
-                  hide-actions
-                  class="elevation-1">
-      <template slot="items"
-                scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.id }}</td>
-        <td class="text-xs-right">{{ props.item.accountNumber }}</td>
-        <td class="text-xs-right">{{ props.item.institutionId }}</td>
-        <td class="text-xs-right">{{ props.item.parentId }}</td>
-        <td class="text-xs-right">{{ props.item.subAccountsIds }}</td>
-      </template>
-    </v-data-table>
+    <v-container>
+      <v-data-table v-bind:headers="headers"
+                    :items="items"
+                    hide-actions
+                    class="elevation-1">
+        <template slot="items"
+                  scope="props">
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.id }}</td>
+          <td class="text-xs-right">{{ props.item.accountNumber }}</td>
+          <td class="text-xs-right">{{ props.item.institutionId }}</td>
+          <td class="text-xs-right">{{ props.item.parentId }}</td>
+          <td class="text-xs-right">{{ props.item.subAccountsIds }}</td>
+        </template>
+      </v-data-table>
+    </v-container>
   </main>
 </template>
 
