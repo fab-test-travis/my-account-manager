@@ -12,7 +12,7 @@
           <td class="text-xs-right">{{ props.item.accountNumber }}</td>
           <td class="text-xs-right">{{ props.item.institutionId }}</td>
           <td class="text-xs-right">{{ props.item.parentId }}</td>
-          <td class="text-xs-right">{{ props.item.subAccountsIds }}</td>
+          <td class="text-xs-right">{{ $repo.getAccountBalance(props.item.id) }}</td>
         </template>
       </v-data-table>
     </v-container>
@@ -35,7 +35,7 @@ export default {
         { text: 'Number', value: 'accountNumber' },
         { text: 'Institution', value: 'institutionId' },
         { text: 'Parent ID', value: 'parentID' },
-        { text: 'Sub Accounts', value: 'subAccountsIds' }
+        { text: 'Balance', value: 'balance' }
       ],
       items: this.$repo.isLoaded() ? this.$repo.bankAccounts() : []
     }
