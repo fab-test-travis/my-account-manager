@@ -12,7 +12,7 @@
           <td class="text-xs-right">{{ props.item.accountNumber }}</td>
           <td class="text-xs-right">{{ props.item.institutionId }}</td>
           <td class="text-xs-right">{{ props.item.parentId }}</td>
-          <td class="text-xs-right">{{ $repo.getAccountBalance(props.item.id) }}</td>
+          <td class="text-xs-right">{{ $format.amount($repo.getAccountBalance(props.item.id) / 100) }}</td>
         </template>
       </v-data-table>
     </v-container>

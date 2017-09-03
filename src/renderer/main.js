@@ -7,12 +7,14 @@ import router from './router'
 import store from './store'
 import Storage from './services/Storage'
 import Repo from './services/Repo'
+import Formatter from './services/Formatter'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)
 
 Vue.storage = Vue.prototype.$storage = new Storage()
 Vue.repo = Vue.prototype.$repo = new Repo(Vue.storage)
+Vue.formatter = Vue.prototype.$format = new Formatter()
 
 /* eslint-disable no-new */
 new Vue({
