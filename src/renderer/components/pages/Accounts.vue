@@ -31,13 +31,12 @@
                       class="elevation-1">
           <template slot="items"
                     scope="props">
-            <td class="text-xs-right">{{ props.item.date }}</td>
-            <td class="text-xs-right"
-                :class="$format.colorForAmount(props.item.amount)">{{ $format.amount(props.item.amount) }}</td>
+            <td class="text-xs-left">{{ props.item.date }}</td>
             <td class="text-xs-right">{{ props.item.fromId }}</td>
-            <td class="text-xs-right">{{ props.item.toId }}</td>
             <td class="text-xs-right">{{ props.item.payeeId }}</td>
             <td class="text-xs-right">{{ props.item.desc }}</td>
+            <td class="text-xs-right"
+                :class="$format.colorForAmount(props.item.amount)">{{ $format.amount(props.item.amount) }}</td>
           </template>
         </v-data-table>
 
@@ -54,12 +53,11 @@ export default {
     return {
       selectedAccount: this.accountId ? this.accountId : null,
       headers: [
-        { text: 'Date', value: 'date', align: 'left' },
-        { text: 'Amount', value: 'amount' },
-        { text: 'From', value: 'fromId' },
-        { text: 'To', value: 'toId' },
-        { text: 'Payee', value: 'payeeId' },
-        { text: 'Description', value: 'desc' }
+        { text: 'Date', value: 'date', sortable: false, align: 'left' },
+        { text: 'From', value: 'fromId', sortable: false },
+        { text: 'Payee', value: 'payeeId', sortable: false },
+        { text: 'Description', value: 'desc', sortable: false },
+        { text: 'Amount', value: 'amount', sortable: false }
       ],
       pagination: {
         size: [25, 50, 100],
