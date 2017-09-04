@@ -5,14 +5,14 @@
                 wrap>
 
         <v-flex xs4>
-          <v-list two-line>
+          <v-list two-line dense>
             <template v-for="(item, index) in items">
               <v-divider v-if="index > 0"
                          :inset="true"
                          :key="index"></v-divider>
               <v-list-tile avatar
                            :key="item.id"
-                           @click="foo(item.institutionId)">
+                           :to="'/accounts/' + item.id">
                 <v-list-tile-avatar>
                   <img :src="$format.institutionIcon(item.institutionId)"></v-list-tile-avatar>
                 </v-list-tile-avatar>

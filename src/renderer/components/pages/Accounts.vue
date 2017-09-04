@@ -49,9 +49,10 @@
 <script>
 export default {
   name: 'page-accounts',
+  props: ['accountId'],
   data() {
     return {
-      selectedAccount: null,
+      selectedAccount: this.accountId ? this.accountId : null,
       headers: [
         {
           text: 'Transaction ID',

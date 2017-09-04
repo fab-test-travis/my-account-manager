@@ -18,8 +18,14 @@ export default new Router({
           component: require('@/components/pages/Dashboard')
         },
         {
+          path: 'accounts/:accountId',
+          component: require('@/components/pages/Accounts'),
+          props: true
+        },
+        {
           path: 'accounts',
-          component: require('@/components/pages/Accounts')
+          component: require('@/components/pages/Accounts'),
+          props: true
         },
         {
           path: 'settings',
