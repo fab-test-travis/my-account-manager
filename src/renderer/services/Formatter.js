@@ -3,4 +3,8 @@ export default class Formatter {
   amount(value) {
     return (value / 100).toFixed(2)
   }
+
+  institutionIcon(id) {
+    return 'static/institutions/' + id + '.png'
+  }
 }
