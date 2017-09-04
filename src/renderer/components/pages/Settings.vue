@@ -7,7 +7,7 @@
 <script>
 
 export default {
-  name: 'page-accounts'
+  name: 'settings'
 }
 
 </script>

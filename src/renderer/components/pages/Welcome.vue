@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'page-welcome',
+  name: 'welcome',
   data() {
     return {
       loader: null,

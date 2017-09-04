@@ -47,7 +47,7 @@
 
 <script>
 export default {
-  name: 'page-accounts',
+  name: 'accounts',
   props: ['accountId'],
   data() {
     return {
@@ -66,8 +66,7 @@ export default {
           descending: true
         }
       },
-      search: '',
-      items: this.selectedAccount ? this.$repo.bankAccounts() : []
+      search: ''
     }
   },
   computed: {

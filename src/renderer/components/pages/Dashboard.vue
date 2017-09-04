@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  name: 'page-dashboard',
+  name: 'dashboard',
   data() {
     return {
       items: this.$repo.isLoaded() ? this.$repo.bankAccounts() : [],

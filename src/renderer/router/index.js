@@ -28,6 +28,11 @@ export default new Router({
           props: true
         },
         {
+          path: 'categories',
+          component: require('@/components/pages/Categories'),
+          props: true
+        },
+        {
           path: 'settings',
           component: require('@/components/pages/Settings')
         }
