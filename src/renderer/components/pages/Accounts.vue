@@ -31,9 +31,9 @@
                       class="elevation-1">
           <template slot="items"
                     scope="props">
-            <td>{{ props.item.id }}</td>
             <td class="text-xs-right">{{ props.item.date }}</td>
-            <td class="text-xs-right">{{ props.item.amount }}</td>
+            <td class="text-xs-right"
+                :class="$format.colorForAmount(props.item.amount)">{{ $format.amount(props.item.amount) }}</td>
             <td class="text-xs-right">{{ props.item.fromId }}</td>
             <td class="text-xs-right">{{ props.item.toId }}</td>
             <td class="text-xs-right">{{ props.item.payeeId }}</td>
@@ -54,13 +54,7 @@ export default {
     return {
       selectedAccount: this.accountId ? this.accountId : null,
       headers: [
-        {
-          text: 'Transaction ID',
-          align: 'left',
-          sortable: false,
-          value: 'id'
-        },
-        { text: 'Date', value: 'date' },
+        { text: 'Date', value: 'date', align: 'left' },
         { text: 'Amount', value: 'amount' },
         { text: 'From', value: 'fromId' },
         { text: 'To', value: 'toId' },
@@ -83,17 +77,7 @@ export default {
       return this.$repo.isLoaded() ? this.$repo.bankAccounts() : []
     },
     transactions() {
-      if (this.selectedAccount == null) {
-        return []
-      }
-      let tList = []
-      // couldn't manage to use lodash here... :-(
-      this.$repo.transactions().forEach(t => {
-        if (this.selectedAccount === t.fromId || this.selectedAccount === t.toId) {
-          tList.push(t)
-        }
-      })
-      return tList
+      return this.$repo.isLoaded() && this.selectedAccount != null ? this.$repo.transactionsForAccount(this.selectedAccount) : []
     }
   }
 }

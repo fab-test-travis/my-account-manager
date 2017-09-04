@@ -29,6 +29,17 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
+  transactionsForAccount(accountId) {
+    let tList = []
+    // couldn't manage to use lodash here... :-(
+    this.transactions().forEach(t => {
+      if (accountId === t.fromId || accountId === t.toId) {
+        tList.push(t)
+      }
+    })
+    return tList
+  }
+
   getAccountBalance(accountId) {
     return _.chain(this.transactions())
       .filter(t => accountId === t.fromId || accountId === t.toId)
