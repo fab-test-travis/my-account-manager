@@ -29,8 +29,7 @@ export default new Router({
         },
         {
           path: 'categories',
-          component: require('@/components/pages/Categories'),
-          props: true
+          component: require('@/components/pages/Categories')
         },
         {
           path: 'settings',
