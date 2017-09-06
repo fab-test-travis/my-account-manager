@@ -32,8 +32,8 @@
           <template slot="items"
                     scope="props">
             <td class="text-xs-left">{{ props.item.date }}</td>
-            <td class="text-xs-right">{{ props.item.fromId }}</td>
-            <td class="text-xs-right">{{ props.item.payeeId }}</td>
+            <td class="text-xs-right">{{ $format.categoryName(props.item.fromId) }}</td>
+            <td class="text-xs-right">{{ $format.payeeName(props.item.payeeId) }}</td>
             <td class="text-xs-right">{{ props.item.desc }}</td>
             <td class="text-xs-right"
                 :class="$format.colorForAmount(props.item.amount)">{{ $format.amount(props.item.amount) }}</td>

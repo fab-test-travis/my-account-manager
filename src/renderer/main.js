@@ -14,7 +14,7 @@ Vue.use(Vuetify)
 
 Vue.storage = Vue.prototype.$storage = new Storage()
 Vue.repo = Vue.prototype.$repo = new Repo(Vue.storage)
-Vue.formatter = Vue.prototype.$format = new Formatter()
+Vue.formatter = Vue.prototype.$format = new Formatter(Vue.repo)
 
 /* eslint-disable no-new */
 new Vue({

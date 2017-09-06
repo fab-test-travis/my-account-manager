@@ -17,12 +17,20 @@ export default class Repo {
     return _.values(this.storage.repo.payees)
   }
 
+  payee(id) {
+    return this.storage.repo.payees[id]
+  }
+
   bankAccounts() {
     return _.values(this.storage.repo.bankAccounts)
   }
 
   categories() {
     return _.values(this.storage.repo.categories)
+  }
+
+  category(id) {
+    return this.storage.repo.categories[id]
   }
 
   transactions() {
