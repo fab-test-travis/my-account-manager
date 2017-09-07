@@ -25,6 +25,10 @@ export default class Repo {
     return _.values(this.storage.repo.bankAccounts)
   }
 
+  bankAccount(id) {
+    return this.storage.repo.bankAccounts[id]
+  }
+
   categories() {
     return _.values(this.storage.repo.categories)
   }

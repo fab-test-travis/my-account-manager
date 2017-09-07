@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-layout row
                 wrap>
-        <v-flex xs8>
+        <v-flex xs3>
           <v-select :disabled="!this.$repo.isLoaded()"
                     :items="accounts"
                     v-model="selectedAccount"
@@ -11,6 +11,9 @@
                     item-text="name"
                     item-value="id">
           </v-select>
+        </v-flex>
+
+        <v-flex xs5>
         </v-flex>
 
         <v-flex xs4>
@@ -27,16 +30,24 @@
                       :items="transactions"
                       :rows-per-page-items="pagination.size"
                       :pagination.sync="pagination.sort"
-                      :search="search"
-                      class="elevation-1">
+                      :search="search">
           <template slot="items"
                     scope="props">
-            <td class="text-xs-left">{{ props.item.date }}</td>
-            <td class="text-xs-right">{{ $format.categoryName(props.item.fromId) }}</td>
-            <td class="text-xs-right">{{ $format.payeeName(props.item.payeeId) }}</td>
-            <td class="text-xs-right">{{ props.item.desc }}</td>
+            <td class="text-xs-left" v-tooltip:top="{ html: props.item.id }">
+              <div style="font-weight: bold; font-size: 16px">{{ $format.dateInYear(props.item.date) }}</div>
+              <div>{{ $format.year(props.item.date) }}</div>
+            </td>
+            <td class="text-xs-left">
+              <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
+              <div>{{ props.item.desc }}</div>
+            </td>
+            <td class="text-xs-center">
+              <div v-tooltip:top="{ html: props.item.fromId }">{{ $format.categoryName(props.item.fromId) }}</div>
+            </td>
             <td class="text-xs-right"
-                :class="$format.colorForAmount(props.item.amount)">{{ $format.amount(props.item.amount) }}</td>
+                :class="$format.colorForAmount(props.item.amount)">
+              {{ $format.amount(props.item.amount) }}
+            </td>
           </template>
         </v-data-table>
 
@@ -54,10 +65,9 @@ export default {
       selectedAccount: this.accountId ? this.accountId : null,
       headers: [
         { text: 'Date', value: 'date', sortable: false, align: 'left' },
-        { text: 'From', value: 'fromId', sortable: false },
-        { text: 'Payee', value: 'payeeId', sortable: false },
-        { text: 'Description', value: 'desc', sortable: false },
-        { text: 'Amount', value: 'amount', sortable: false }
+        { text: 'Description', value: 'description', sortable: false, align: 'left' },
+        { text: 'Category', value: 'category', sortable: false, align: 'center' },
+        { text: 'Amount', value: 'amount', sortable: false, align: 'right' }
       ],
       pagination: {
         size: [25, 50, 100],
