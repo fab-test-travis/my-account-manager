@@ -33,20 +33,28 @@
                       :search="search">
           <template slot="items"
                     scope="props">
-            <td class="text-xs-left" v-tooltip:top="{ html: props.item.id }">
+            <td class="text-xs-left"
+                v-tooltip:top="{ html: props.item.id }">
               <div style="font-weight: bold; font-size: 16px">{{ $format.dateInYear(props.item.date) }}</div>
               <div>{{ $format.year(props.item.date) }}</div>
             </td>
             <td class="text-xs-left">
+              <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
+                Virement {{ selectedAccount === props.item.fromId ? 'depuis' : 'vers' }} 
+                {{ selectedAccount === props.item.fromId ? $format.categoryName(props.item.toId) : $format.categoryName(props.item.fromId) }}
+              </div>
               <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
               <div>{{ props.item.desc }}</div>
             </td>
-            <td class="text-xs-center">
+            <td v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null" class="text-xs-center">
+              Virement
+            </td>
+            <td v-else class="text-xs-center">
               <div v-tooltip:top="{ html: props.item.fromId }">{{ $format.categoryName(props.item.fromId) }}</div>
             </td>
             <td class="text-xs-right"
-                :class="$format.colorForAmount(props.item.amount)">
-              {{ $format.amount(props.item.amount) }}
+                :class="$format.colorForAmount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount)">
+              {{ $format.amount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount) }}
             </td>
           </template>
         </v-data-table>
