@@ -1,6 +1,11 @@
 import * as jsonfile from 'jsonfile'
 
 export default class Storage {
+  constructor() {
+    // Let's hard code the path during the first development stages
+    this.loadFromJsonSync('/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json')
+  }
+
   loadFromJsonSync(filePath) {
     this.repo = jsonfile.readFileSync(filePath, 'UTF-8')
   }
