@@ -21,8 +21,9 @@ export default class Repo {
     return this.storage.repo.payees[id]
   }
 
-  bankAccounts() {
-    return _.values(this.storage.repo.bankAccounts)
+  bankAccounts(showClosed = false) {
+    let accounts = _.values(this.storage.repo.bankAccounts)
+    return _.chain(accounts).filter(a => (showClosed ? true : !a.closed)).value()
   }
 
   bankAccount(id) {

@@ -13,8 +13,13 @@
                     item-value="id">
           </v-select>
         </v-flex>
-
-        <v-flex xs7></v-flex>
+        <v-flex xs2>
+          <v-switch
+              label="Show closed"
+              v-model="showClosed"
+            ></v-switch>
+        </v-flex>
+        <v-flex xs5></v-flex>
 
         <v-flex xs3
                 v-if="selectedAccount != null"
@@ -112,12 +117,13 @@ export default {
           descending: true
         }
       },
+      showClosed: false,
       search: ''
     }
   },
   computed: {
     accounts() {
-      return this.$repo.isLoaded() ? this.$repo.bankAccounts() : []
+      return this.$repo.isLoaded() ? this.$repo.bankAccounts(this.showClosed) : []
     },
     transactions() {
       return this.$repo.isLoaded() && this.selectedAccount != null ? this.$repo.transactionsForAccount(this.selectedAccount) : []
