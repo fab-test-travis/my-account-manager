@@ -15,7 +15,7 @@
         </v-flex>
 
         <v-data-table :headers="headers"
-                      :items="categories"
+                      :items="payees"
                       :rows-per-page-items="pagination.size"
                       :pagination.sync="pagination.sort"
                       :search="search"
@@ -24,8 +24,6 @@
                     scope="props">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.id }}</td>
-            <td class="text-xs-right">{{ props.item.parentId }}</td>
-            <td class="text-xs-right">{{ props.item.subAccountIds }}</td>
           </template>
         </v-data-table>
 
@@ -36,14 +34,12 @@
 
 <script>
 export default {
-  name: 'categories',
+  name: 'payees',
   data() {
     return {
       headers: [
         { text: 'Name', value: 'name', align: 'left' },
-        { text: 'ID', value: 'id' },
-        { text: 'Parent', value: 'parentId' },
-        { text: 'Sub Accounts', value: 'subAccountIds' }
+        { text: 'ID', value: 'id' }
       ],
       pagination: {
         size: [12, 25, 50, 100],
@@ -53,7 +49,7 @@ export default {
         }
       },
       search: '',
-      categories: this.$repo.isLoaded() ? this.$repo.categories() : []
+      payees: this.$repo.isLoaded() ? this.$repo.payees() : []
     }
   }
 }

@@ -32,6 +32,14 @@ export default new Router({
           component: require('@/components/pages/Categories')
         },
         {
+          path: 'institutions',
+          component: require('@/components/pages/Institutions')
+        },
+        {
+          path: 'payees',
+          component: require('@/components/pages/Payees')
+        },
+        {
           path: 'settings',
           component: require('@/components/pages/Settings')
         }
