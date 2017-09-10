@@ -45,6 +45,14 @@
               {{ $repo.bankAccount(selectedAccount).accountNumber }}
             </div>
           </div>
+          <div>
+            <v-btn icon class="cyan--text text--accent-1">
+              <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
+            </v-btn>
+            <v-btn icon class="cyan--text text--accent-1">
+              <v-icon>sync</v-icon>
+            </v-btn>
+          </div>
           <div class="mt-5">
             <v-text-field append-icon="search"
                           label="Search"
