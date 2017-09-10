@@ -3,23 +3,39 @@
     <v-container fluid>
       <v-layout row
                 wrap>
-        <v-flex xs3
+        <v-flex xs5
                 class="pr-4">
+          <v-select :disabled="!this.$repo.isLoaded()"
+                    :items="accounts"
+                    v-model="selectedAccount"
+                    label="Select account"
+                    item-text="name"
+                    item-value="id">
+          </v-select>
+        </v-flex>
+
+        <v-flex xs7></v-flex>
+
+        <v-flex xs3
+                v-if="selectedAccount != null"
+                class="pr-5">
           <div>
-            <v-select :disabled="!this.$repo.isLoaded()"
-                      :items="accounts"
-                      v-model="selectedAccount"
-                      label="Select account"
-                      item-text="name"
-                      item-value="id">
-            </v-select>
-          </div>
-          <div>
+            <div class="pb-4">
+              <v-avatar size="64px">
+                <img :src="$format.institutionIcon($repo.bankAccount(selectedAccount).institutionId)">
+              </v-avatar>
+            </div>
             <div class="grey--text text--darken-1">
               Balance
             </div>
             <div class="text-xs-right headline">
               {{ $format.amount(accountBalance) }} &euro;
+            </div>
+            <div class="grey--text text--darken-1">
+              Account number
+            </div>
+            <div class="text-xs-right headline">
+              {{ $repo.bankAccount(selectedAccount).accountNumber }}
             </div>
           </div>
           <div class="mt-5">
@@ -33,7 +49,8 @@
           </div>
         </v-flex>
 
-        <v-flex xs9>
+        <v-flex xs9
+                v-if="selectedAccount != null">
 
           <v-data-table :headers="headers"
                         :items="transactions"
@@ -89,7 +106,7 @@ export default {
         { text: 'Amount', value: 'amount', sortable: false, align: 'right' }
       ],
       pagination: {
-        size: [25, 50, 100],
+        size: [12, 25, 50, 100],
         sort: {
           sortBy: 'date',
           descending: true

@@ -14,7 +14,7 @@
                            :key="item.id"
                            :to="'/accounts/' + item.id">
                 <v-list-tile-avatar>
-                  <img :src="$format.institutionIcon(item.institutionId)"></v-list-tile-avatar>
+                  <img :src="$format.institutionIcon(item.institutionId)">
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title v-html="item.name"></v-list-tile-title>
