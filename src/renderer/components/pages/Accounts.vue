@@ -41,7 +41,7 @@
             <div class="grey--text text--darken-1">
               Account number
             </div>
-            <div class="text-xs-right headline">
+            <div class="text-xs-right">
               {{ $repo.bankAccount(selectedAccount).accountNumber }}
             </div>
           </div>
