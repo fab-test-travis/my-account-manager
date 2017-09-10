@@ -14,12 +14,14 @@
           </v-select>
         </v-flex>
         <v-flex xs2>
-          <v-switch
-              label="Show closed"
-              v-model="showClosed"
-            ></v-switch>
+          <v-switch label="Favorites Only"
+                    v-model="favoritesOnly"></v-switch>
         </v-flex>
-        <v-flex xs5></v-flex>
+        <v-flex xs2>
+          <v-switch label="Show closed"
+                    v-model="showClosed"></v-switch>
+        </v-flex>
+        <v-flex xs1></v-flex>
 
         <v-flex xs3
                 v-if="selectedAccount != null"
@@ -98,6 +100,8 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
+
 export default {
   name: 'accounts',
   props: ['accountId'],
@@ -117,19 +121,26 @@ export default {
           descending: true
         }
       },
+      favoritesOnly: true,
       showClosed: false,
       search: ''
     }
   },
   computed: {
     accounts() {
-      return this.$repo.isLoaded() ? this.$repo.bankAccounts(this.showClosed) : []
+      return this.$repo.isLoaded()
+        ? _.chain(this.$repo.bankAccounts(this.showClosed)).filter(a => (this.favoritesOnly ? a.favorite : true)).value()
+        : []
     },
     transactions() {
-      return this.$repo.isLoaded() && this.selectedAccount != null ? this.$repo.transactionsForAccount(this.selectedAccount) : []
+      return this.$repo.isLoaded() && this.selectedAccount != null
+        ? this.$repo.transactionsForAccount(this.selectedAccount)
+        : []
     },
     accountBalance() {
-      return this.$repo.isLoaded() && this.selectedAccount != null ? this.$repo.getAccountBalance(this.selectedAccount) : ''
+      return this.$repo.isLoaded() && this.selectedAccount != null
+        ? this.$repo.getAccountBalance(this.selectedAccount)
+        : ''
     }
   }
 }

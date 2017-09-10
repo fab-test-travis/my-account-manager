@@ -24,7 +24,7 @@
                   <v-list-tile-action-text>
                     {{ $format.amount($repo.getAccountBalance(item.id)) }} &euro;
                   </v-list-tile-action-text>
-                  <v-icon class="grey--text text--lighten-1">star_border</v-icon>
+                  <v-icon class="grey--text text--lighten-1">{{ item.favorite ? 'star' : 'star_border' }}</v-icon>
                 </v-list-tile-action>
               </v-list-tile>
             </template>
