@@ -23,7 +23,10 @@ export default class Repo {
 
   bankAccounts(showClosed = false) {
     let accounts = _.values(this.storage.repo.bankAccounts)
-    return _.chain(accounts).filter(a => (showClosed ? true : !a.closed)).value()
+    return _.chain(accounts)
+      .sortBy(['name'])
+      .filter(a => (showClosed ? true : !a.closed))
+      .value()
   }
 
   bankAccount(id) {
