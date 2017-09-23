@@ -7,7 +7,7 @@ import router from './router'
 import store from './store'
 import Storage from './services/Storage'
 import Repo from './services/Repo'
-import Formatter from './services/Formatter'
+import Formatter from './services/utils/Formatter'
 
 Vue.config.productionTip = false
 Vue.use(Vuetify)

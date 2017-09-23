@@ -1,6 +1,6 @@
 import * as path from 'path'
 
-import CsvLoader from '@/services/CsvLoader'
+import CsvLoader from '@/services/utils/CsvLoader'
 
 describe('CsvLoader', () => {
   const csvLoader = new CsvLoader()
@@ -65,6 +65,7 @@ function pathForFile(file) {
     'unit',
     'specs',
     'services',
+    'utils',
     'CsvLoader',
     file
   )

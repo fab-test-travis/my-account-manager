@@ -1,4 +1,4 @@
-import Formatter from '@/services/Formatter'
+import Formatter from '@/services/utils/Formatter'
 
 describe('Formatter', () => {
   const f = new Formatter()
