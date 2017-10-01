@@ -1,0 +1,11 @@
+{
+  "P000400": {
+    "regexps": ["Caf De La Haute Savoie", "CPAM"]
+  },
+  "P000006": {
+    "regexps": ["Medecins Sans Frontieres"]
+  },
+  "P000025": {
+    "regexps": ["Area"]
+  }
+}
