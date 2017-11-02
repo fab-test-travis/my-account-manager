@@ -15,11 +15,12 @@ export default class CsvLoader {
    * Parses a CSV content downloaded from the Bank app into a list of transactions
    * with the format:
    * {
-        date: '08/09/2017',
+        date: '2017-09-14',
         label: 'Foo',
-        debit: '10,00',
-        credit: ''
+        debit: 1000,
+        credit: null
       }
+   * ('credit' and 'debit' are parsed from floats and turned to Cents)
    * @param {*} csvContent
    * @param {*} cb(transactions, err)
    */
@@ -30,7 +31,15 @@ export default class CsvLoader {
     Converter({
       headers: ['date', 'label', 'debit', 'credit'],
       noheader: true,
-      delimiter: ';'
+      delimiter: ';',
+      includeColumns: [0, 1, 2, 3],
+      colParser: {
+        date: this.revertDate,
+        label: 'string',
+        debit: this.turnToCents,
+        credit: this.turnToCents
+      },
+      checkType: true
     })
       .fromString(contentToParse)
       .on('json', jsonObj => {
@@ -39,9 +48,18 @@ export default class CsvLoader {
       .on('done', err => {
         if (err) {
           cb(null, err)
+        } else {
+          cb(transactions, null)
         }
-        cb(transactions, null)
       })
+  }
+
+  revertDate(item, head, resultRow, row, colIdx) {
+    return item.substr(6, 4) + '-' + item.substr(3, 2) + '-' + item.substr(0, 2)
+  }
+
+  turnToCents(item, head, resultRow, row, colIdx) {
+    return item === '' ? null : parseFloat(item.replace(',', '.')) * 100
   }
 
   removeUselessChars(csvContent) {

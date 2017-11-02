@@ -10,7 +10,7 @@ describe('CsvLoader', () => {
 Foo Bar Thing
 
 Date;Libellé;Débit Euros;Crédit Euros;
-08/09/2017;"My City -    07/09 10h41 
+14/09/2017;"My City -    07/09 10h41 
 Retrait Au Distributeur 
 ";10,00;
 
@@ -18,10 +18,10 @@ Retrait Au Distributeur
     csvLoader.extractTransactions(csvString, (transactions, err) => {
       assert.equal(transactions.length, 1)
       assert.deepEqual(transactions[0], {
-        date: '08/09/2017',
+        date: '2017-09-14',
         label: 'My City -    07/09 10h41 \nRetrait Au Distributeur \n',
-        debit: '10,00',
-        credit: ''
+        debit: 1000,
+        credit: null
       })
       done()
     })
@@ -30,9 +30,8 @@ Retrait Au Distributeur
   it('should handle error when parsing wrong CSV string', done => {
     let csvString = `
 Date;Libellé;Débit Euros;Crédit Euros;
-My City -    07/09 10h41 
-Retrait Au Distributeur 
-";10,00;
+14/09/2017;"My City -    07/09 10h41 
+Retrait 
 `
     csvLoader.extractTransactions(csvString, (transactions, err) => {
       assert.isNotNull(err)
@@ -47,10 +46,16 @@ Retrait Au Distributeur
       (transactions, err) => {
         assert.equal(transactions.length, 5)
         assert.deepEqual(transactions[0], {
-          date: '08/09/2017',
+          date: '2017-09-08',
           label: 'My City -    07/09 10h41 \nRetrait Au Distributeur \n',
-          debit: '10,00',
-          credit: ''
+          debit: 1000,
+          credit: null
+        })
+        assert.deepEqual(transactions[1], {
+          date: '2017-09-07',
+          label: 'CPAM\nVirement En Votre Faveur \nXpxreference  092849349389 \n006379389v16 \n',
+          debit: null,
+          credit: 1734
         })
         done()
       }
