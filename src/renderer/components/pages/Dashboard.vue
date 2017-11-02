@@ -43,11 +43,6 @@ export default {
     return {
       items: this.$repo.isLoaded() ? this.$repo.bankAccounts() : []
     }
-  },
-  methods: {
-    foo(id) {
-      alert(id)
-    }
   }
 }
 
