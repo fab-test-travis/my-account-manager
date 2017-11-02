@@ -1,6 +1,5 @@
 {
     "editor.tabSize": 2,
     "prettier.semi": false,
-    "prettier.singleQuote": true,
-    "vetur.format.html.wrap_attributes": "force-aligned"
+    "prettier.singleQuote": true
 }
