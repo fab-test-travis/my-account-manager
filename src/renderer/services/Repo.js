@@ -3,6 +3,19 @@ import * as _ from 'lodash'
 export default class Repo {
   constructor(storage) {
     this.storage = storage
+    this.initCounters()
+  }
+
+  initCounters() {
+    this.counters = {}
+    this.counters.transaction = this.findNextTransactionCounter()
+  }
+
+  findNextTransactionCounter() {
+    let count = _.maxBy(this.transactions(), 'id').id
+    // we get an ID like "T000000000000005922"
+    // let's remove the T and multiply by 1 to turn it into a number
+    return count.substring(1) * 1
   }
 
   isLoaded() {
@@ -43,6 +56,26 @@ export default class Repo {
 
   transactions() {
     return _.values(this.storage.repo.transactions)
+  }
+
+  addTransaction(date, amount, toId, fromId, payeeId, desc) {
+    let transactionId = this.counters.transaction++
+    this.storage.repo.transactions[transactionId] = {
+      id: transactionId,
+      date: date,
+      amount: amount,
+      toId: toId,
+      fromId: fromId,
+      payeeId: payeeId,
+      desc: desc
+    }
+  }
+
+  synchronizeTransactions(accountId, basicTransactions) {
+    basicTransactions.forEach(t => {
+      let amount = t.credit == null ? -t.debit : t.credit
+      this.addTransaction(t.date, amount, accountId, '', '', t.label)
+    })
   }
 
   transactionsForAccount(accountId) {

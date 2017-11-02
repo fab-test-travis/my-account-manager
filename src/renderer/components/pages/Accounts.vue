@@ -49,9 +49,30 @@
             <v-btn icon class="cyan--text text--accent-1">
               <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
             </v-btn>
-            <v-btn icon class="cyan--text text--accent-1">
-              <v-icon>sync</v-icon>
-            </v-btn>
+            <v-dialog v-model="syncModal" persistent width="50%">
+              <v-btn icon class="cyan--text text--accent-1" slot="activator">
+                <v-icon>sync</v-icon>
+              </v-btn>
+              <v-card>
+                <v-card-title>
+                  <span class="headline">Synchronize account with transactions</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-text-field 
+                    name="transactionsInput"
+                    v-model="transactionsInput"
+                    label="Transactions"
+                    textarea
+                    rows="15">
+                    </v-text-field>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn class="blue--text darken-1" flat @click.native="syncModal = false">Close</v-btn>
+                  <v-btn class="blue--text darken-1" flat @click.native="synchronizeWithTransactions()">Synchronize</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </div>
           <div class="mt-5">
             <v-text-field append-icon="search"
@@ -76,7 +97,7 @@
                       scope="props">
               <td class="text-xs-left"
                   v-tooltip:top="{ html: props.item.id }">
-                <div style="font-weight: bold; font-size: 16px">{{ $format.dateInYear(props.item.date) }}</div>
+                <div style="font-weight: bold; font-size: 16px; white-space: nowrap">{{ $format.dateInYear(props.item.date) }}</div>
                 <div>{{ $format.year(props.item.date) }}</div>
               </td>
               <td class="text-xs-left">
@@ -118,8 +139,18 @@ export default {
       selectedAccount: this.accountId ? this.accountId : null,
       headers: [
         { text: 'Date', value: 'date', sortable: false, align: 'left' },
-        { text: 'Description', value: 'description', sortable: false, align: 'left' },
-        { text: 'Category', value: 'category', sortable: false, align: 'center' },
+        {
+          text: 'Description',
+          value: 'description',
+          sortable: false,
+          align: 'left'
+        },
+        {
+          text: 'Category',
+          value: 'category',
+          sortable: false,
+          align: 'center'
+        },
         { text: 'Amount', value: 'amount', sortable: false, align: 'right' }
       ],
       pagination: {
@@ -131,28 +162,61 @@ export default {
       },
       favoritesOnly: true,
       showClosed: false,
-      search: ''
+      search: '',
+      syncModal: false,
+      transactionsInput: '',
+      transactions: this.retrieveTransactions(),
+      accountBalance: this.computeAccountBalance()
     }
   },
   computed: {
     accounts() {
       return this.$repo.isLoaded()
-        ? _.chain(this.$repo.bankAccounts(this.showClosed)).filter(a => (this.favoritesOnly ? a.favorite : true)).value()
+        ? _.chain(this.$repo.bankAccounts(this.showClosed))
+            .filter(a => (this.favoritesOnly ? a.favorite : true))
+            .value()
+        : []
+    }
+  },
+  watch: {
+    selectedAccount: function(newAccount) {
+      this.transactions = this.retrieveTransactions()
+      this.accountBalance = this.computeAccountBalance()
+    }
+  },
+  methods: {
+    retrieveTransactions() {
+      return this.getAccountId() != null
+        ? this.$repo.transactionsForAccount(this.getAccountId())
         : []
     },
-    transactions() {
-      return this.$repo.isLoaded() && this.selectedAccount != null
-        ? this.$repo.transactionsForAccount(this.selectedAccount)
-        : []
-    },
-    accountBalance() {
-      return this.$repo.isLoaded() && this.selectedAccount != null
-        ? this.$repo.getAccountBalance(this.selectedAccount)
+    computeAccountBalance() {
+      return this.getAccountId() != null
+        ? this.$repo.getAccountBalance(this.getAccountId())
         : ''
+    },
+    getAccountId() {
+      return (this.accountId != null) ? this.accountId : this.selectedAccount
+    },
+    synchronizeWithTransactions() {
+      this.$cvsLoader.extractTransactions(
+        this.transactionsInput,
+        (transactions, err) => {
+          this.syncModal = false
+          if (err) {
+            // TODO Do some better error handling here
+            alert(err)
+          } else {
+            this.$repo.synchronizeTransactions(this.selectedAccount, transactions)
+            this.transactions = this.retrieveTransactions()
+            this.accountBalance = this.computeAccountBalance()
+          }
+          this.transactionsInput = ''
+        }
+      )
     }
   }
 }
-
 </script>
 
 <style>
