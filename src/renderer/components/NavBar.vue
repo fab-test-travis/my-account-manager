@@ -64,7 +64,7 @@ export default {
   name: 'nav-bar',
   data() {
     return {
-      mini: false,
+      mini: true,
       manageItems: [
         { icon: 'attach_money', text: 'Accounts', to: '/accounts' },
         { icon: 'group_work', text: 'Categories', to: '/categories' },
