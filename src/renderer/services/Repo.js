@@ -12,10 +12,18 @@ export default class Repo {
   }
 
   findNextTransactionCounter() {
-    let count = _.maxBy(this.transactions(), 'id').id
+    let lastCounter = _.maxBy(this.transactions(), 'id').id
     // we get an ID like "T000000000000005922"
-    // let's remove the T and multiply by 1 to turn it into a number
-    return count.substring(1) * 1
+    // let's remove the T, multiply by 1 to turn it into a number, and add 1 to get the next counter
+    return (lastCounter.substring(1) * 1) + 1
+  }
+
+  nextTransactionID() {
+    let nextCounter = this.counters.transaction
+    // increase the counter for next ID
+    this.counters.transaction++
+    // and return the new counter, with the appropriate format 'T3782034'
+    return 'T' + nextCounter
   }
 
   isLoaded() {
@@ -59,7 +67,7 @@ export default class Repo {
   }
 
   addTransaction(date, amount, toId, fromId, payeeId, desc) {
-    let transactionId = this.counters.transaction++
+    let transactionId = this.nextTransactionID()
     this.storage.repo.transactions[transactionId] = {
       id: transactionId,
       date: date,
