@@ -79,6 +79,11 @@ export default class Repo {
     }
   }
 
+  /**
+   * Synchronises transactions retrieved from a CSV file. (see CsvLoader)
+   * @param {*} accountId the account to add transactions to
+   * @param {*} basicTransactions the CSV-format transactions
+   */
   synchronizeTransactions(accountId, basicTransactions) {
     basicTransactions.forEach(t => {
       let amount = t.credit == null ? -t.debit : t.credit
@@ -87,14 +92,9 @@ export default class Repo {
   }
 
   transactionsForAccount(accountId) {
-    let tList = []
-    // couldn't manage to use lodash here... :-(
-    this.transactions().forEach(t => {
-      if (accountId === t.fromId || accountId === t.toId) {
-        tList.push(t)
-      }
-    })
-    return tList
+    return _.chain(this.transactions())
+      .filter(t => accountId === t.fromId || accountId === t.toId)
+      .value()
   }
 
   getAccountBalance(accountId) {
