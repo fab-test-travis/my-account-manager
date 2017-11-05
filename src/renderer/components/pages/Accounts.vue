@@ -197,7 +197,7 @@ export default {
         : ''
     },
     getAccountId() {
-      return (this.accountId != null) ? this.accountId : this.selectedAccount
+      return (this.selectedAccount == null) ? this.accountId : this.selectedAccount
     },
     synchronizeWithTransactions() {
       this.$cvsLoader.extractTransactions(
