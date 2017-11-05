@@ -15,8 +15,8 @@ Vue.config.productionTip = false
 Vue.use(Vuetify)
 
 Vue.storage = Vue.prototype.$storage = new Storage()
-Vue.repo = Vue.prototype.$repo = new Repo(Vue.storage)
 Vue.payeeFinder = Vue.prototype.$payeeFinder = new PayeeFinder(Vue.storage)
+Vue.repo = Vue.prototype.$repo = new Repo(Vue.storage, Vue.payeeFinder)
 Vue.formatter = Vue.prototype.$format = new Formatter(Vue.repo)
 Vue.cvsLoader = Vue.prototype.$cvsLoader = new CsvLoader(Vue.repo)
 

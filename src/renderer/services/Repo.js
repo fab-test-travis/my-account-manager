@@ -1,8 +1,9 @@
 import * as _ from 'lodash'
 
 export default class Repo {
-  constructor(storage) {
+  constructor(storage, payeeFinder) {
     this.storage = storage
+    this.payeeFinder = payeeFinder
     this.initCounters()
   }
 
@@ -66,7 +67,7 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
-  addTransaction(date, amount, toId, fromId, payeeId, desc) {
+  addStagedTransaction(date, amount, toId, fromId, payeeId, label) {
     let transactionId = this.nextTransactionID()
     this.storage.repo.transactions[transactionId] = {
       id: transactionId,
@@ -75,7 +76,8 @@ export default class Repo {
       toId: toId,
       fromId: fromId,
       payeeId: payeeId,
-      desc: desc
+      desc: '',
+      stagedDesc: label
     }
   }
 
@@ -87,7 +89,14 @@ export default class Repo {
   synchronizeTransactions(accountId, basicTransactions) {
     basicTransactions.forEach(t => {
       let amount = t.credit == null ? -t.debit : t.credit
-      this.addTransaction(t.date, amount, accountId, '', '', t.label)
+      let payee = ''
+      let category = ''
+      let finder = this.payeeFinder.findBasedOnLabel(t.label)
+      if (finder != null) {
+        payee = finder.payee
+        category = finder.cat
+      }
+      this.addStagedTransaction(t.date, amount, accountId, category, payee, t.label)
     })
   }
 

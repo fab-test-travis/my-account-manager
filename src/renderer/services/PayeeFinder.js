@@ -13,7 +13,7 @@ export default class PayeeFinder {
    * }
    */
   finders() {
-    return this.storage.payeeFinderConf()
+    return this.storage.payeeFinders()
   }
 
   /**

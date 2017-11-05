@@ -16,7 +16,7 @@ export default class Storage {
     return this.repo
   }
 
-  payeeFinderConf() {
+  payeeFinders() {
     return this.payeeFinderConf
   }
 

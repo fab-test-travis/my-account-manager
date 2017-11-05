@@ -1,7 +1,7 @@
 import PayeeFinder from '@/services/PayeeFinder'
 
 const payeeFinder = new PayeeFinder({
-  payeeFinderConf() {
+  payeeFinders() {
     return [
       {
         expr: 'Caf De La Haute Savoie',

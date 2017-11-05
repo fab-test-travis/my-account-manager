@@ -107,7 +107,8 @@
                   {{ selectedAccount === props.item.fromId ? $format.categoryName(props.item.toId) : $format.categoryName(props.item.fromId) }}
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
-                <div>{{ props.item.desc }}</div>
+                <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
+                <div v-if="props.item.stagedDesc !== ''" class="blue-grey darken-1">{{ props.item.stagedDesc }}</div>
               </td>
               <td class="text-xs-center">
                 <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
