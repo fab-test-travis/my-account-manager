@@ -1,30 +1,43 @@
 import PayeeFinder from '@/services/utils/PayeeFinder'
 
 describe('PayeeFinder', () => {
-  const payeeFinder = new PayeeFinder({
-    P000400: {
-      id: 'P000400',
-      regexps: ['Caf De La Haute Savoie', 'CPAM']
+  const payeeFinder = new PayeeFinder([
+    {
+      expr: 'Caf De La Haute Savoie',
+      payee: 'P1',
+      cat: {
+        credit: 'C10',
+        debit: ''
+      }
     },
-    P000006: {
-      id: 'P000006',
-      regexps: ['Medecins Sans Frontieres']
+    {
+      expr: 'CA',
+      payee: 'P2',
+      cat: {
+        credit: '',
+        debit: 'C20'
+      }
     },
-    P000025: {
-      id: 'P000025',
-      regexps: ['Area']
+    {
+      expr: 'Medecins Sans Frontieres',
+      payee: 'P3',
+      cat: {
+        credit: '',
+        debit: 'C30'
+      }
     }
-  })
+  ])
 
   it('should return correct payee', () => {
     assert.equal(
-      payeeFinder.findBasedOnLabel('Versement Caf De La Haute Savoie 2107').id,
-      'P000400'
+      payeeFinder.findBasedOnLabel('Versement Caf De La Haute Savoie 2107')
+        .payee,
+      'P1'
     )
-    assert.equal(payeeFinder.findBasedOnLabel('Virement\n CPAM').id, 'P000400')
+    assert.equal(payeeFinder.findBasedOnLabel('Virement\n CA').payee, 'P2')
     assert.equal(
-      payeeFinder.findBasedOnLabel('Area \n Account 39480098').id,
-      'P000025'
+      payeeFinder.findBasedOnLabel('Medecins Sans Frontieres\n Account 39480098').payee,
+      'P3'
     )
   })
 
@@ -36,5 +49,13 @@ describe('PayeeFinder', () => {
     assert.isNull(
       payeeFinder.findBasedOnLabel('Versement Medecins Sans\n Frontieres')
     )
+  })
+
+  it('should return correct category', () => {
+    assert.equal(
+      payeeFinder.findBasedOnLabel('Versement Caf De La Haute Savoie 2107').cat.credit,
+      'C10'
+    )
+    assert.equal(payeeFinder.findBasedOnLabel('Virement\n CA').cat.debit, 'C20')
   })
 })

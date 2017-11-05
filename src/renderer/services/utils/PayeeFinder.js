@@ -1,16 +1,27 @@
 export default class PayeeFinder {
-  constructor(payees) {
-    this.payees = payees
+  constructor(payeeFinders) {
+    this.payeeFinders = payeeFinders
   }
 
+  /**
+   * Searches throw the payee finders the first one that matches
+   * the given label.
+   * Returns null if none found.
+   * A payee finder has the following structure:
+   * {
+   *  expr: 'CPAM',
+   *  payee: 'P123',
+   *  cat: 'C267'
+   * }
+   * @param {*} label
+   */
   findBasedOnLabel(label) {
-    for (let payee in this.payees) {
-      for (let regexp of this.payees[payee].regexps) {
-        if (label.indexOf(regexp) >= 0) {
-          return this.payees[payee]
-        }
+    for (let finder of this.payeeFinders) {
+      if (label.indexOf(finder.expr) >= 0) {
+        return finder
       }
     }
+
     return null
   }
 }
