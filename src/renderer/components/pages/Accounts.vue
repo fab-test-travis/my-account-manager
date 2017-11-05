@@ -63,7 +63,8 @@
                     v-model="transactionsInput"
                     label="Transactions"
                     textarea
-                    rows="15">
+                    rows="15"
+                    autofocus>
                     </v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -205,7 +206,7 @@ export default {
           this.syncModal = false
           if (err) {
             // TODO Do some better error handling here
-            alert(err)
+            console.error(err)
           } else {
             this.$repo.synchronizeTransactions(this.selectedAccount, transactions)
             this.transactions = this.retrieveTransactions()

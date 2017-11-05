@@ -1,32 +1,48 @@
 import * as jsonfile from 'jsonfile'
 
+const repoFile =
+  '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json'
+const payeeFinderConfFile =
+  '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/PayeeFinder.json'
+
 export default class Storage {
   constructor() {
     // Let's hard code the path during the first development stages
-    this.loadFromJsonSync('/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json')
+    this.repo = jsonfile.readFileSync(repoFile, 'UTF-8')
+    this.payeeFinderConf = jsonfile.readFileSync(payeeFinderConfFile, 'UTF-8')
   }
 
-  loadFromJsonSync(filePath) {
-    this.repo = jsonfile.readFileSync(filePath, 'UTF-8')
+  repo() {
+    return this.repo
   }
 
-  loadFromJson(filePath, cb) {
-    // const file: string = "resources/repository-big.json"
-    // // A000001 / NomDuCompte => 6400.9
-    // // A000003 / LivretA => 9882.66
-    // console.log(repositoryService.getAccountBalance("A000001") / 100);
-    // console.log(repositoryService.getAccountBalance("A000003") / 100);
+  payeeFinderConf() {
+    return this.payeeFinderConf
+  }
 
-    // this.repo = jsonfile.readFileSync(filePath, 'UTF-8')
-    jsonfile.readFile(
-      '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json',
-      'UTF-8',
-      (err, obj) => {
-        if (!err) {
-          this.repo = obj
-        }
-        cb(err, obj)
+  reload(cb) {
+    this.loadRepo(cb)
+  }
+
+  loadRepo(cb) {
+    jsonfile.readFile(repoFile, 'UTF-8', (err, obj) => {
+      if (!err) {
+        this.repo = obj
+        this.loadPayeeConf(cb)
+      } else {
+        cb(err)
       }
-    )
+    })
+  }
+
+  loadPayeeConf(cb) {
+    jsonfile.readFile(payeeFinderConfFile, 'UTF-8', (err, obj) => {
+      if (!err) {
+        this.payeeFinderConf = obj
+        cb()
+      } else {
+        cb(err)
+      }
+    })
   }
 }

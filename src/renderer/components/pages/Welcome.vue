@@ -24,7 +24,7 @@ export default {
       const l = this.loader
       this[l] = !this[l]
 
-      this.$storage.loadFromJson('', (err, obj) => {
+      this.$storage.reload((err, obj) => {
         if (err) {
           console.error(err)
         }
@@ -34,7 +34,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style>
