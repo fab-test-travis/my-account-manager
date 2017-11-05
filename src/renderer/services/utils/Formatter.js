@@ -29,7 +29,7 @@ export default class Formatter {
   // Returns the name of the payee based on its ID
   payeeName(id) {
     let payee = this.repo.payee(id)
-    return payee == null ? '?' : payee.name
+    return payee == null ? '-- payee? --' : payee.name
   }
 
   // Returns the name of the category based on its ID
@@ -38,7 +38,7 @@ export default class Formatter {
     if (category == null) {
       category = this.repo.bankAccount(id)
     }
-    return category == null ? '?' : category.name
+    return category == null ? '-- category? --' : category.name
   }
 
   month(date) {

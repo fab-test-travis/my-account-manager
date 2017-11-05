@@ -69,8 +69,8 @@
                 </v-card-text>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn class="blue--text darken-1" flat @click.native="syncModal = false">Close</v-btn>
                   <v-btn class="blue--text darken-1" flat @click.native="synchronizeWithTransactions()">Synchronize</v-btn>
+                  <v-btn class="blue--text darken-1" flat @click.native="syncModal = false">Close</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
@@ -103,18 +103,19 @@
               </td>
               <td class="text-xs-left">
                 <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
-                  Virement {{ selectedAccount === props.item.fromId ? 'depuis' : 'vers' }} {{ selectedAccount === props.item.fromId ? $format.categoryName(props.item.toId) : $format.categoryName(props.item.fromId) }}
+                  Virement {{ selectedAccount === props.item.fromId ? 'depuis' : 'vers' }} 
+                  {{ selectedAccount === props.item.fromId ? $format.categoryName(props.item.toId) : $format.categoryName(props.item.fromId) }}
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div>{{ props.item.desc }}</div>
               </td>
-              <td v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null"
-                  class="text-xs-center">
-                Virement
-              </td>
-              <td v-else
-                  class="text-xs-center">
-                <div v-tooltip:top="{ html: props.item.fromId }">{{ $format.categoryName(props.item.fromId) }}</div>
+              <td class="text-xs-center">
+                <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
+                  Virement
+                </div>
+                <div v-else v-tooltip:top="{ html: props.item.fromId }">
+                  {{ $format.categoryName(props.item.fromId) }}
+                </div>
               </td>
               <td class="text-xs-right"
                   :class="$format.colorForAmount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount)">

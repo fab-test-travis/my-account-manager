@@ -4,7 +4,7 @@
       <v-layout row
                 wrap>
 
-        <v-flex xs4>
+        <v-flex xs6>
           <v-list two-line dense>
             <template v-for="(item, index) in items">
               <v-divider v-if="index > 0"
