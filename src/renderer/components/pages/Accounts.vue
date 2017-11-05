@@ -108,7 +108,7 @@
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
-                <div v-if="props.item.stagedDesc !== ''" class="blue-grey darken-1">{{ props.item.stagedDesc }}</div>
+                <div v-if="props.item.stagedDesc !== ''" :class="props.item.payeeId === '' ? 'amber--text' : 'grey--text'">{{ props.item.stagedDesc }}</div>
               </td>
               <td class="text-xs-center">
                 <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
@@ -118,9 +118,12 @@
                   {{ $format.categoryName(props.item.fromId) }}
                 </div>
               </td>
-              <td class="text-xs-right"
+              <td class="text-xs-right" style="white-space: nowrap"
                   :class="$format.colorForAmount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount)">
                 {{ $format.amount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount) }}
+                <v-icon :class="props.item.stagedDesc ? 'state-icon amber--text' : 'state-icon grey--text'">
+                  {{ props.item.stagedDesc ? 'cached' : 'done' }}
+                </v-icon>
               </td>
             </template>
           </v-data-table>
@@ -223,5 +226,7 @@ export default {
 </script>
 
 <style>
-
+.state-icon {
+  font-size: 15px;
+}
 </style>
