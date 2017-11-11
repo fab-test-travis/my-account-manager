@@ -40,6 +40,10 @@ export default new Router({
           component: require('@/components/pages/Payees')
         },
         {
+          path: 'payeefinders',
+          component: require('@/components/pages/PayeeFinders')
+        },
+        {
           path: 'settings',
           component: require('@/components/pages/Settings')
         }

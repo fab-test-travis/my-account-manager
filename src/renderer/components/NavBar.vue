@@ -45,6 +45,16 @@
 
     <v-subheader class="mt-2 grey--text text--darken-1">ADMIN</v-subheader>
     <v-list dense>
+      <v-list-tile to="/payeefinders">
+        <v-list-tile-action>
+          <v-icon>compare_arrows</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-content>
+          <v-list-tile-title>
+            Payee Finders
+          </v-list-tile-title>
+        </v-list-tile-content>
+      </v-list-tile>
       <v-list-tile to="/settings">
         <v-list-tile-action>
           <v-icon>settings</v-icon>
