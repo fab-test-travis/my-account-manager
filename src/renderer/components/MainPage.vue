@@ -4,6 +4,9 @@
 
     <v-toolbar fixed
                class="blue darken-1">
+      <v-avatar>
+        <img src="../assets/logo.png"/>
+      </v-avatar>
       <v-toolbar-title>
         My Account Manager
         <v-icon>monetization_on</v-icon>

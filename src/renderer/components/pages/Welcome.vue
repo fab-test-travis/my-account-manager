@@ -4,7 +4,7 @@
            :loading="loading"
            @click.native="loader = 'loading'"
            :disabled="loading">
-      Load
+      Reload
       <v-icon right>file_upload</v-icon>
     </v-btn>
   </main>

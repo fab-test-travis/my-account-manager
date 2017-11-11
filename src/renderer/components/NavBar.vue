@@ -1,14 +1,16 @@
 <template>
   <v-navigation-drawer permanent
-                       :mini-variant.sync="mini">
+                       :mini-variant="mini">
 
     <div :class="miniIconStyle">
-      <v-toolbar-side-icon @click.stop="mini = !mini">
+      <v-toolbar-side-icon @click.stop="mini = !mini" class="grey--text">
       </v-toolbar-side-icon>
     </div>
 
-    <div class="pa-3 text-xs-center">
-      <img src="../assets/logo.png" :width="logoWidth"/>
+    <div v-if="mini === false" class="pa-5 text-xs-center">
+      <strong>My Account Manager</strong>
+      <br/>
+      v. 1.0.0
     </div>
 
     <v-divider></v-divider>
@@ -76,9 +78,6 @@ export default {
   computed: {
     miniIconStyle() {
       return this.mini ? 'text-xs-center' : ''
-    },
-    logoWidth() {
-      return this.mini ? '40px' : '100px'
     }
   }
 }
