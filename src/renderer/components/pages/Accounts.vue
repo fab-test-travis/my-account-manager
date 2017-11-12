@@ -74,6 +74,7 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            <payee-finder-modal></payee-finder-modal>
           </div>
           <div class="mt-5">
             <v-text-field append-icon="search"
@@ -135,10 +136,12 @@
 </template>
 
 <script>
+import PayeeFinderModal from './Accounts/PayeeFinderModal'
 import * as _ from 'lodash'
 
 export default {
   name: 'accounts',
+  components: { PayeeFinderModal },
   props: ['accountId'],
   data() {
     return {

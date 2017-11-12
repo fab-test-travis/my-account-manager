@@ -17,6 +17,19 @@ export default class PayeeFinder {
   }
 
   /**
+   * Adds a new finder that has the following structure:
+   * {
+   *  expr: 'CPAM',
+   *  payee: 'P123',
+   *  cat: 'C267'
+   * }
+   * @param {*} finder
+   */
+  addFinder(finder) {
+    this.storage.payeeFinders().push(finder)
+  }
+
+  /**
    * Searches throw the payee finders the first one that matches
    * the given label.
    * Returns null if none found.
