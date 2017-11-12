@@ -109,7 +109,7 @@
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
-                <div v-if="props.item.stagedDesc !== ''" :class="props.item.payeeId === '' ? 'amber--text' : 'grey--text'">{{ props.item.stagedDesc }}</div>
+                <div v-if="props.item.stagedDesc !== ''" :class="props.item.fromId === '' ? 'amber--text' : 'grey--text'">{{ props.item.stagedDesc }}</div>
               </td>
               <td class="text-xs-center">
                 <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
