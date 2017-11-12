@@ -11,6 +11,7 @@ export default class PayeeFinder {
    *  payee: 'P123',
    *  cat: 'C267'
    * }
+   * , where "expr" is a regular expression.
    */
   finders() {
     return this.storage.payeeFinders()
@@ -37,7 +38,7 @@ export default class PayeeFinder {
    */
   findBasedOnLabel(label) {
     for (let finder of this.finders()) {
-      if (label.indexOf(finder.expr) >= 0) {
+      if (label.search(finder.expr) >= 0) {
         return finder
       }
     }
