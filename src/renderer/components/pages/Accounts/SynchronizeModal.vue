@@ -1,0 +1,63 @@
+<template>
+  <v-dialog v-model="syncModal" persistent width="50%">
+    <v-btn icon class="cyan--text text--accent-1" slot="activator">
+      <v-icon>sync</v-icon>
+    </v-btn>
+    <v-card>
+      <v-card-title>
+        <span class="headline">Synchronize account with transactions</span>
+      </v-card-title>
+      <v-card-text>
+        <v-text-field 
+          name="transactionsInput"
+          v-model="transactionsInput"
+          label="Transactions"
+          textarea
+          rows="15"
+          autofocus>
+          </v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn class="blue--text darken-1" flat @click.native="synchronizeWithTransactions()">Synchronize</v-btn>
+        <v-btn class="blue--text darken-1" flat @click.native="close()">Close</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
+<script>
+export default {
+  name: 'synchronize-modal',
+  props: ['account'],
+  data() {
+    return {
+      syncModal: false,
+      transactionsInput: ''
+    }
+  },
+  methods: {
+    close() {
+      this.syncModal = false
+      this.transactionsInput = ''
+    },
+    synchronizeWithTransactions() {
+      this.$cvsLoader.extractTransactions(this.transactionsInput, (transactions, err) => {
+        this.syncModal = false
+        if (err) {
+          // TODO Do some better error handling here
+          console.error(err)
+        } else {
+          this.$repo.synchronizeTransactions(this.account, transactions)
+          this.$emit('saved')
+        }
+        this.close()
+      })
+    }
+  }
+}
+</script>
+
+<style>
+
+</style>

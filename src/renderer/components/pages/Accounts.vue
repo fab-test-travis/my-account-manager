@@ -49,31 +49,7 @@
             <v-btn icon class="cyan--text text--accent-1">
               <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
             </v-btn>
-            <v-dialog v-model="syncModal" persistent width="50%">
-              <v-btn icon class="cyan--text text--accent-1" slot="activator">
-                <v-icon>sync</v-icon>
-              </v-btn>
-              <v-card>
-                <v-card-title>
-                  <span class="headline">Synchronize account with transactions</span>
-                </v-card-title>
-                <v-card-text>
-                  <v-text-field 
-                    name="transactionsInput"
-                    v-model="transactionsInput"
-                    label="Transactions"
-                    textarea
-                    rows="15"
-                    autofocus>
-                    </v-text-field>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn class="blue--text darken-1" flat @click.native="synchronizeWithTransactions()">Synchronize</v-btn>
-                  <v-btn class="blue--text darken-1" flat @click.native="syncModal = false">Close</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+            <synchronize-modal :account="getAccountId()" @saved="refreshAccountData"></synchronize-modal>
             <payee-finder-modal></payee-finder-modal>
           </div>
           <div class="mt-5">
@@ -137,11 +113,12 @@
 
 <script>
 import PayeeFinderModal from './Accounts/PayeeFinderModal'
+import SynchronizeModal from './Accounts/SynchronizeModal'
 import * as _ from 'lodash'
 
 export default {
   name: 'accounts',
-  components: { PayeeFinderModal },
+  components: { PayeeFinderModal, SynchronizeModal },
   props: ['accountId'],
   data() {
     return {
@@ -172,8 +149,6 @@ export default {
       favoritesOnly: true,
       showClosed: false,
       search: '',
-      syncModal: false,
-      transactionsInput: '',
       transactions: this.retrieveTransactions(),
       accountBalance: this.computeAccountBalance()
     }
@@ -195,34 +170,17 @@ export default {
   },
   methods: {
     retrieveTransactions() {
-      return this.getAccountId() != null
-        ? this.$repo.transactionsForAccount(this.getAccountId())
-        : []
+      return this.getAccountId() != null ? this.$repo.transactionsForAccount(this.getAccountId()) : []
     },
     computeAccountBalance() {
-      return this.getAccountId() != null
-        ? this.$repo.getAccountBalance(this.getAccountId())
-        : ''
+      return this.getAccountId() != null ? this.$repo.getAccountBalance(this.getAccountId()) : ''
     },
     getAccountId() {
-      return (this.selectedAccount == null) ? this.accountId : this.selectedAccount
+      return this.selectedAccount == null ? this.accountId : this.selectedAccount
     },
-    synchronizeWithTransactions() {
-      this.$cvsLoader.extractTransactions(
-        this.transactionsInput,
-        (transactions, err) => {
-          this.syncModal = false
-          if (err) {
-            // TODO Do some better error handling here
-            console.error(err)
-          } else {
-            this.$repo.synchronizeTransactions(this.selectedAccount, transactions)
-            this.transactions = this.retrieveTransactions()
-            this.accountBalance = this.computeAccountBalance()
-          }
-          this.transactionsInput = ''
-        }
-      )
+    refreshAccountData() {
+      this.transactions = this.retrieveTransactions()
+      this.accountBalance = this.computeAccountBalance()
     }
   }
 }

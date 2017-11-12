@@ -49,8 +49,7 @@ export default {
       pfModal: false,
       expression: '',
       payeeId: '',
-      categoryId: '',
-      valid: true
+      categoryId: ''
     }
   },
   methods: {
