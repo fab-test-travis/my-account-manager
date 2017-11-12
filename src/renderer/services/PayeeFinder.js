@@ -43,7 +43,6 @@ export default class PayeeFinder {
    * @param {*} label
    */
   findBasedOnLabel(label) {
-    console.info(label)
     for (let finder of this.finders()) {
       if (label.search(finder.expr) >= 0) {
         return finder
