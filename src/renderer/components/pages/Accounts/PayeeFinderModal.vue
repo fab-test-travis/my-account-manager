@@ -20,8 +20,7 @@
           item-text="name"
           item-value="id"
           v-model="payeeId"
-          autocomplete
-          required>
+          autocomplete>
         </v-select>
         <v-select
           label="Category"
@@ -62,9 +61,9 @@ export default {
       this.categoryId = ''
     },
     addPayeeFinder() {
+      // Payee can be empty, but not the other fields
       if (
         this.expression !== '' &&
-        this.payeeId !== '' &&
         this.categoryId !== ''
       ) {
         this.$payeeFinder.addFinder({
