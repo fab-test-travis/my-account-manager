@@ -19,7 +19,7 @@ Retrait Au Distributeur
       assert.equal(transactions.length, 1)
       assert.deepEqual(transactions[0], {
         date: '2017-09-14',
-        label: 'My City -    07/09 10h41 \nRetrait Au Distributeur \n',
+        label: 'My City - 07/09 10h41 Retrait Au Distributeur ',
         debit: 1000,
         credit: null
       })
@@ -47,13 +47,13 @@ Retrait
         assert.equal(transactions.length, 5)
         assert.deepEqual(transactions[0], {
           date: '2017-09-08',
-          label: 'My City -    07/09 10h41 \nRetrait Au Distributeur \n',
+          label: 'My City - 07/09 10h41 Retrait Au Distributeur ',
           debit: 1000,
           credit: null
         })
         assert.deepEqual(transactions[1], {
           date: '2017-09-07',
-          label: 'CPAM\nVirement En Votre Faveur \nXpxreference  092849349389 \n006379389v16 \n',
+          label: 'CPAM Virement En Votre Faveur Xpxreference 092849349389 006379389v16 ',
           debit: null,
           credit: 1734
         })

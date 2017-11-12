@@ -35,7 +35,7 @@ export default class CsvLoader {
       includeColumns: [0, 1, 2, 3],
       colParser: {
         date: this.revertDate,
-        label: 'string',
+        label: this.replaceEndLinesBySpace,
         debit: this.turnToCents,
         credit: this.turnToCents
       },
@@ -54,6 +54,10 @@ export default class CsvLoader {
       })
   }
 
+  replaceEndLinesBySpace(item, head, resultRow, row, colIdx) {
+    return item.replace(/\r?\n|\r/g, ' ').replace(/\s+/g, ' ')
+  }
+
   revertDate(item, head, resultRow, row, colIdx) {
     return item.substr(6, 4) + '-' + item.substr(3, 2) + '-' + item.substr(0, 2)
   }
@@ -63,11 +67,6 @@ export default class CsvLoader {
   }
 
   removeUselessChars(csvContent) {
-    return csvContent
-      .substr(
-        csvContent.lastIndexOf('Euros;') + 'Euros;'.length,
-        csvContent.length
-      )
-      .trim()
+    return csvContent.substr(csvContent.lastIndexOf('Euros;') + 'Euros;'.length, csvContent.length).trim()
   }
 }
