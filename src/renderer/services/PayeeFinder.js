@@ -24,10 +24,16 @@ export default class PayeeFinder {
    *  payee: 'P123',
    *  cat: 'C267'
    * }
-   * @param {*} finder
+   * @param {*} payeeId
+   * @param {*} expression
+   * @param {*} categoryId
    */
-  addFinder(finder) {
-    this.storage.payeeFinders().push(finder)
+  addFinder(payeeId, expression, categoryId) {
+    this.storage.payeeFinders().push({
+      payee: payeeId,
+      expr: expression.trim(),
+      cat: categoryId
+    })
   }
 
   /**
@@ -37,6 +43,7 @@ export default class PayeeFinder {
    * @param {*} label
    */
   findBasedOnLabel(label) {
+    console.info(label)
     for (let finder of this.finders()) {
       if (label.search(finder.expr) >= 0) {
         return finder

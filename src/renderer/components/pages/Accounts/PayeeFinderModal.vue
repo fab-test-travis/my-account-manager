@@ -62,15 +62,8 @@ export default {
     },
     addPayeeFinder() {
       // Payee can be empty, but not the other fields
-      if (
-        this.expression !== '' &&
-        this.categoryId !== ''
-      ) {
-        this.$payeeFinder.addFinder({
-          payee: this.payeeId,
-          expr: this.expression,
-          cat: this.categoryId
-        })
+      if (this.expression !== '' && this.categoryId !== '') {
+        this.$payeeFinder.addFinder(this.payeeId, this.expression, this.categoryId)
         this.close()
       }
     }
