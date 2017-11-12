@@ -22,16 +22,16 @@
                       class="elevation-1">
           <template slot="items"
                     scope="props">
-            <td class="text-xs-left">
-              {{ props.item.payee }}
-              <br/>
-              <strong>{{$format.payeeName(props.item.payee)}}</strong>
-            </td>
-            <td class="text-xs-right">{{ props.item.expr }}</td>
+            <td class="text-xs-left">{{ props.item.expr }}</td>
             <td class="text-xs-right">
               {{ props.item.cat }}
               <br/>
               <strong>{{$format.categoryName(props.item.cat)}}</strong>
+            </td>
+            <td class="text-xs-right">
+              {{ props.item.payee }}
+              <br/>
+              <strong>{{$format.payeeName(props.item.payee)}}</strong>
             </td>
           </template>
         </v-data-table>
@@ -47,9 +47,9 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'Payee', value: 'payee', sortable: false, align: 'left' },
-        { text: 'Expression', value: 'expression', sortable: false },
-        { text: 'Category', value: 'category', sortable: false }
+        { text: 'Expression', value: 'expression', sortable: false, align: 'left' },
+        { text: 'Category', value: 'category', sortable: false },
+        { text: 'Payee', value: 'payee', sortable: false }
       ],
       pagination: {
         size: [12, 25, 50, 100]
