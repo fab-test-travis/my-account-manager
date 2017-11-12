@@ -1,9 +1,7 @@
 import * as jsonfile from 'jsonfile'
 
-const repoFile =
-  '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/Comptes.json'
-const payeeFinderConfFile =
-  '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/PayeeFinder.json'
+const repoFile = '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/storage/Comptes.json'
+const payeeFinderConfFile = '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/storage/PayeeFinder.json'
 
 export default class Storage {
   constructor() {
@@ -18,6 +16,10 @@ export default class Storage {
 
   payeeFinders() {
     return this.payeeFinderConf
+  }
+
+  savePayeeFinders(cb) {
+    jsonfile.writeFile(payeeFinderConfFile, this.payeeFinders(), 'UTF-8', cb)
   }
 
   reload(cb) {
