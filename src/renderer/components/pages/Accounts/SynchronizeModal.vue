@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="syncModal" persistent width="50%">
-    <v-btn icon class="cyan--text text--accent-1" slot="activator">
+    <v-btn icon class="cyan--text text--accent-1" slot="activator" v-tooltip:bottom="{ html: 'Sync Transactions' }">
       <v-icon>sync</v-icon>
     </v-btn>
     <v-card>
