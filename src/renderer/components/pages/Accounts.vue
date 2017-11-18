@@ -65,7 +65,13 @@
 
         <v-flex xs9
                 v-if="selectedAccount != null">
-
+          <edit-transaction-modal 
+            :open="editTransactionModal" 
+            :transaction="editTransaction"
+            :account="getAccountId()" 
+            @closed="closeTransactionModal"
+            @saved="transactionSaved"
+          ></edit-transaction-modal>
           <v-data-table :headers="headers"
                         :items="transactions"
                         :rows-per-page-items="pagination.size"
@@ -96,11 +102,13 @@
                 </div>
               </td>
               <td class="text-xs-right" style="white-space: nowrap"
-                  :class="$format.colorForAmount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount)">
-                {{ $format.amount(selectedAccount === props.item.toId ? props.item.amount : -props.item.amount) }}
-                <v-icon :class="props.item.stagedDesc ? 'state-icon amber--text' : 'state-icon grey--text'">
-                  {{ props.item.stagedDesc ? 'cached' : 'done' }}
-                </v-icon>
+                  :class="$format.colorForAmount($format.transactionAmount(props.item, selectedAccount))">
+                {{ $format.transactionAmount(props.item, selectedAccount) }}
+                <v-btn icon small class="mb-1" v-tooltip:bottom="{ html: 'Edit' }" @click="openTransactionModal(props.item)">
+                  <v-icon :class="props.item.stagedDesc ? 'state-icon amber--text' : 'state-icon grey--text'">
+                    {{ props.item.stagedDesc ? 'cached' : 'done' }}
+                  </v-icon>
+                </v-btn>
               </td>
             </template>
           </v-data-table>
@@ -114,11 +122,12 @@
 <script>
 import PayeeFinderModal from './Accounts/PayeeFinderModal'
 import SynchronizeModal from './Accounts/SynchronizeModal'
+import EditTransactionModal from './Accounts/EditTransactionModal'
 import * as _ from 'lodash'
 
 export default {
   name: 'accounts',
-  components: { PayeeFinderModal, SynchronizeModal },
+  components: { PayeeFinderModal, SynchronizeModal, EditTransactionModal },
   props: ['accountId'],
   data() {
     return {
@@ -150,7 +159,9 @@ export default {
       showClosed: false,
       search: '',
       transactions: this.retrieveTransactions(),
-      accountBalance: this.computeAccountBalance()
+      accountBalance: this.computeAccountBalance(),
+      editTransactionModal: false,
+      editTransaction: null
     }
   },
   computed: {
@@ -181,6 +192,18 @@ export default {
     refreshAccountData() {
       this.transactions = this.retrieveTransactions()
       this.accountBalance = this.computeAccountBalance()
+    },
+    openTransactionModal(transaction) {
+      this.editTransaction = transaction
+      this.editTransactionModal = true
+    },
+    closeTransactionModal() {
+      this.editTransaction = null
+      this.editTransactionModal = false
+    },
+    transactionSaved() {
+      this.transactions = this.retrieveTransactions()
+      this.closeTransactionModal()
     }
   }
 }
