@@ -16,6 +16,11 @@ export default class Formatter {
     return (value / 100).toFixed(2)
   }
 
+  // Displays amount of the given transaction when displayed in the given account
+  transactionAmount(transaction, accountId) {
+    return this.amount(accountId === transaction.toId ? transaction.amount : -transaction.amount)
+  }
+
   // Gives the color for the amount (red for debit, green for credit)
   colorForAmount(amount) {
     return amount < 0 ? 'red--text' : 'green--text'
