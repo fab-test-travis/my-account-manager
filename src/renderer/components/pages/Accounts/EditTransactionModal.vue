@@ -22,7 +22,7 @@
       <v-card-text>
         <v-select
           label="Payee"
-          :items="this.$repo.payees()"
+          :items="$repo.payees()"
           item-text="name"
           item-value="id"
           v-model="payeeId"
@@ -31,7 +31,7 @@
         </v-select>
         <v-select
           label="Category"
-          :items="this.$repo.categories()"
+          :items="$repo.categories()"
           item-text="name"
           item-value="id"
           v-model="categoryId"
@@ -55,10 +55,6 @@
 </template>
 
 <script>
-//
-// TODO: remove 'this' from all the this.$repo/storage/csvLoader calls
-// TODO: remove all the "!=null" in if conditions
-//
 export default {
   name: 'edit-transaction-modal',
   props: ['open', 'transaction', 'account'],

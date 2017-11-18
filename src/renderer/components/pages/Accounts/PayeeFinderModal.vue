@@ -16,7 +16,7 @@
         </v-text-field>
         <v-select
           label="Payee"
-          :items="this.$repo.payees()"
+          :items="$repo.payees()"
           item-text="name"
           item-value="id"
           v-model="payeeId"
@@ -24,7 +24,7 @@
         </v-select>
         <v-select
           label="Category"
-          :items="this.$repo.categories()"
+          :items="$repo.categories()"
           item-text="name"
           item-value="id"
           v-model="categoryId"
