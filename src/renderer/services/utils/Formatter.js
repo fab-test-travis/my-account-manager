@@ -26,6 +26,26 @@ export default class Formatter {
     return amount < 0 ? 'red--text' : 'green--text'
   }
 
+  // Tells whether the transaction is a transfer or not
+  // => Not really a format method... should probably be refactored and put somewhere else
+  isTransfer(transaction) {
+    return this.repo.bankAccount(transaction.toId) != null && this.repo.bankAccount(transaction.fromId) != null
+  }
+
+  // Label for a transaction that is a transfer
+  transferLabel(transaction, accountId) {
+    if (this.isTransfer(transaction)) {
+      return (
+        'Virement ' +
+        (accountId === transaction.fromId
+          ? 'depuis ' + this.categoryName(transaction.toId)
+          : 'vers ' + this.categoryName(transaction.fromId))
+      )
+    } else {
+      return 'PROBLEM: this transaction is not a transfer.'
+    }
+  }
+
   // Returns the path to the logo of the institution which ID is passed
   institutionIcon(id) {
     return 'static/institutions/' + id + '.png'

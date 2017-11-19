@@ -85,9 +85,8 @@
                 <div>{{ $format.year(props.item.date) }}</div>
               </td>
               <td class="text-xs-left">
-                <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
-                  Virement {{ selectedAccount === props.item.fromId ? 'depuis' : 'vers' }} 
-                  {{ selectedAccount === props.item.fromId ? $format.categoryName(props.item.toId) : $format.categoryName(props.item.fromId) }}
+                <div v-if="$format.isTransfer(props.item)">
+                  {{ $format.transferLabel(props.item, selectedAccount) }}
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
