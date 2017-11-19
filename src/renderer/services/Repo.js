@@ -67,6 +67,10 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
+  deleteTransaction(transaction) {
+    delete this.storage.repo.transactions[transaction.id]
+  }
+
   addStagedTransaction(date, amount, toId, fromId, payeeId, label) {
     let transactionId = this.nextTransactionID()
     this.storage.repo.transactions[transactionId] = {

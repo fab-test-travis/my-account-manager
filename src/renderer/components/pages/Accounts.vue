@@ -65,13 +65,20 @@
 
         <v-flex xs9
                 v-if="selectedAccount != null">
-          <edit-transaction-modal 
+          <edit-transaction-modal
             :open="editTransactionModal" 
             :transaction="editTransaction"
             :account="getAccountId()" 
             @closed="closeTransactionModal"
             @saved="transactionSaved"
           ></edit-transaction-modal>
+          <edit-card-payments-modal
+            :open="editCardModal" 
+            :transaction="editTransaction"
+            :account="getAccountId()" 
+            @closed="closeCardModal"
+            @saved="transactionSaved"
+          ></edit-card-payments-modal>
           <v-data-table :headers="headers"
                         :items="transactions"
                         :rows-per-page-items="pagination.size"
@@ -103,7 +110,7 @@
               <td class="text-xs-right" style="white-space: nowrap"
                   :class="$format.colorForAmount($format.transactionAmount(props.item, selectedAccount))">
                 {{ $format.transactionAmount(props.item, selectedAccount) }}
-                <v-btn icon small class="mb-1" v-tooltip:bottom="{ html: 'Edit' }" @click="openTransactionModal(props.item)">
+                <v-btn icon small class="mb-1" v-tooltip:bottom="{ html: 'Edit' }" @click="openEditModal(props.item)">
                   <v-icon :class="props.item.stagedDesc ? 'state-icon amber--text' : 'state-icon grey--text'">
                     {{ props.item.stagedDesc ? 'cached' : 'done' }}
                   </v-icon>
@@ -122,11 +129,12 @@
 import PayeeFinderModal from './Accounts/PayeeFinderModal'
 import SynchronizeModal from './Accounts/SynchronizeModal'
 import EditTransactionModal from './Accounts/EditTransactionModal'
+import EditCardPaymentsModal from './Accounts/EditCardPaymentsModal'
 import * as _ from 'lodash'
 
 export default {
   name: 'accounts',
-  components: { PayeeFinderModal, SynchronizeModal, EditTransactionModal },
+  components: { PayeeFinderModal, SynchronizeModal, EditTransactionModal, EditCardPaymentsModal },
   props: ['accountId'],
   data() {
     return {
@@ -159,8 +167,9 @@ export default {
       search: '',
       transactions: this.retrieveTransactions(),
       accountBalance: this.computeAccountBalance(),
+      editTransaction: null,
       editTransactionModal: false,
-      editTransaction: null
+      editCardModal: false
     }
   },
   computed: {
@@ -192,6 +201,14 @@ export default {
       this.transactions = this.retrieveTransactions()
       this.accountBalance = this.computeAccountBalance()
     },
+    // methods to manage the edition of transactions
+    openEditModal(transaction) {
+      if (this.$format.isCardPayments(transaction)) {
+        this.openCardModal(transaction)
+      } else {
+        this.openTransactionModal(transaction)
+      }
+    },
     openTransactionModal(transaction) {
       this.editTransaction = transaction
       this.editTransactionModal = true
@@ -200,9 +217,18 @@ export default {
       this.editTransaction = null
       this.editTransactionModal = false
     },
+    openCardModal(transaction) {
+      this.editTransaction = transaction
+      this.editCardModal = true
+    },
+    closeCardModal() {
+      this.editTransaction = null
+      this.editCardModal = false
+    },
     transactionSaved() {
       this.transactions = this.retrieveTransactions()
       this.closeTransactionModal()
+      this.closeCardModal()
     }
   }
 }

@@ -32,6 +32,12 @@ export default class Formatter {
     return this.repo.bankAccount(transaction.toId) != null && this.repo.bankAccount(transaction.fromId) != null
   }
 
+  // Tells whether the transaction is a list of monthly card payments
+  // => Same as previous one: not really a format method... should probably be refactored and put somewhere else
+  isCardPayments(transaction) {
+    return transaction.stagedDesc && transaction.stagedDesc.indexOf('Depenses Carte') >= 0
+  }
+
   // Label for a transaction that is a transfer
   transferLabel(transaction, accountId) {
     if (this.isTransfer(transaction)) {
