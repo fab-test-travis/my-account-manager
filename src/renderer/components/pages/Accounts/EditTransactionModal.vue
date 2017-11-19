@@ -19,7 +19,24 @@
           </span>
         </div>
       </v-card-title>
-      <v-card-text>
+      <v-card-text v-if="$format.isTransfer(this.transaction)">
+        <v-select
+          :label="($format.transactionAmount(this.transaction, this.account) > 0 ? 'From ' : 'To ') + ' Bank Account'"
+          :items="$repo.bankAccounts()"
+          item-text="name"
+          item-value="id"
+          v-model="categoryId"
+          autocomplete
+          required>
+        </v-select>
+        <v-text-field
+          label="Description"
+          textarea
+          rows="3"
+          v-model="description">
+        </v-text-field>
+      </v-card-text>
+      <v-card-text v-else>
         <v-select
           label="Payee"
           :items="$repo.payees()"
