@@ -63,10 +63,33 @@ export default class CsvLoader {
   }
 
   turnToCents(item, head, resultRow, row, colIdx) {
-    return item === '' ? null : parseFloat(item.replace(',', '.')) * 100
+    return item === '' ? null : item.replace(',', '') * 1
   }
 
   removeUselessChars(csvContent) {
-    return csvContent.substr(csvContent.lastIndexOf('Euros;') + 'Euros;'.length, csvContent.length).trim()
+    let eurosPosition = csvContent.lastIndexOf('Euros;')
+    if (eurosPosition > 0) {
+      return csvContent.substr(eurosPosition + 'Euros;'.length, csvContent.length).trim()
+    } else {
+      return csvContent.trim()
+    }
+  }
+
+  /**
+   * Fixes the bad CSV to add ';' at the end of each line that starts with a .
+   * @param {*} text the CSV content
+   */
+  addMissingSemiColon(text) {
+    let goodCsv = ''
+    let lines = text.split('\n')
+    lines.forEach(line => {
+      let l = line.trim()
+      if (l.startsWith('.')) {
+        goodCsv += l.substr(1) + ';\n'
+      } else {
+        goodCsv += l + '\n'
+      }
+    })
+    return goodCsv
   }
 }
