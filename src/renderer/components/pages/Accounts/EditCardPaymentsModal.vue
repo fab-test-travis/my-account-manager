@@ -27,7 +27,10 @@
           textarea
           rows="15"
           autofocus>
-          </v-text-field>
+        </v-text-field>
+        <div v-if="errorMessage" class="red--text">
+          <v-icon class="red--text">block</v-icon> {{ this.errorMessage }}
+        </div>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -44,12 +47,13 @@ export default {
   props: ['open', 'transaction', 'account'],
   data() {
     return {
-      transactionsInput: ''
+      transactionsInput: '',
+      errorMessage: null
     }
   },
   methods: {
     close() {
-      this.transactionsInput = ''
+      this.resetFields()
       this.$emit('closed')
     },
     updateTransaction() {
@@ -66,12 +70,24 @@ export default {
           // ##########################
           // TODO => MUST check that the sum equals the amount of the transaction
           // ##########################
-          this.$repo.synchronizeTransactions(this.account, transactions)
-          this.$repo.deleteTransaction(this.transaction)
-          this.transactionsInput = ''
-          this.$emit('saved')
+          // this.$repo.synchronizeTransactions(this.account, transactions)
+          // this.$repo.deleteTransaction(this.transaction)
+          // this.transactionsInput = ''
+          // this.$emit('saved')
+          this.$repo.replaceCardPayments(this.account, this.transaction, transactions, err => {
+            if (err) {
+              this.errorMessage = err.message
+            } else {
+              this.resetFields()
+              this.$emit('saved')
+            }
+          })
         }
       })
+    },
+    resetFields() {
+      this.errorMessage = null
+      this.transactionsInput = ''
     }
   }
 }

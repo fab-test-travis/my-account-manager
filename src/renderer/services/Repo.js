@@ -16,7 +16,7 @@ export default class Repo {
     let lastCounter = _.maxBy(this.transactions(), 'id').id
     // we get an ID like "T000000000000005922"
     // let's remove the T, multiply by 1 to turn it into a number, and add 1 to get the next counter
-    return (lastCounter.substring(1) * 1) + 1
+    return lastCounter.substring(1) * 1 + 1
   }
 
   nextTransactionID() {
@@ -102,6 +102,26 @@ export default class Repo {
       }
       this.addStagedTransaction(t.date, amount, accountId, category, payee, t.label)
     })
+  }
+
+  replaceCardPayments(accountId, transactionToReplace, basicTransactions, cb) {
+    let transactionsAmount = _.chain(basicTransactions)
+      .map(t => t.credit == null ? -t.debit : t.credit)
+      .reduce((a, b) => a + b, 0)
+      .value()
+    if (transactionsAmount === transactionToReplace.amount) {
+      // Perfect, the amounts match: we can replace the given transaction to replace by all the given transactions
+      this.synchronizeTransactions(accountId, basicTransactions)
+      this.deleteTransaction(transactionToReplace)
+      cb()
+    } else {
+      // we can't replace, let's return an error
+      cb(
+        new Error(
+          `The sum of the transactions (${transactionsAmount}) does not match the sum of card payments (${transactionToReplace.amount}).`
+        )
+      )
+    }
   }
 
   transactionsForAccount(accountId) {
