@@ -14,12 +14,16 @@
           </v-select>
         </v-flex>
         <v-flex xs2>
-          <v-switch label="Favorites Only"
-                    v-model="favoritesOnly"></v-switch>
+          <v-switch label="Favorites"
+                    v-model="favoritesOnly"
+                    color="blue darken-1">
+          </v-switch>
         </v-flex>
         <v-flex xs2>
           <v-switch label="Show closed"
-                    v-model="showClosed"></v-switch>
+                    v-model="showClosed"
+                    color="blue darken-1">
+          </v-switch>
         </v-flex>
         <v-flex xs1></v-flex>
 
@@ -46,7 +50,7 @@
             </div>
           </div>
           <div>
-            <v-btn icon class="cyan--text text--accent-1">
+            <v-btn icon class="blue--text darken-1">
               <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
             </v-btn>
             <synchronize-modal :account="getAccountId()" @saved="refreshAccountData"></synchronize-modal>
