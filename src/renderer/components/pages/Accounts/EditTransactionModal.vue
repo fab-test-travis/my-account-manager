@@ -17,7 +17,11 @@
             class="grey--text">
             <i>{{ this.transaction.stagedDesc }}</i>
           </span>
-          <v-switch label="Bank Transfer" v-model="isBankTransfer"></v-switch>
+          <v-switch 
+            label="Bank Transfer" 
+            v-model="isBankTransfer" 
+            color="blue darken-1">
+          </v-switch>
         </div>
       </v-card-title>
       <v-card-text v-if="isBankTransfer">
@@ -38,30 +42,49 @@
         </v-text-field>
       </v-card-text>
       <v-card-text v-else>
-        <v-select
-          label="Payee"
-          :items="$repo.payees()"
-          item-text="name"
-          item-value="id"
-          v-model="payeeId"
-          autocomplete
-          autofocus>
-        </v-select>
-        <v-select
-          label="Category"
-          :items="$repo.categories()"
-          item-text="name"
-          item-value="id"
-          v-model="categoryId"
-          autocomplete
-          required>
-        </v-select>
-        <v-text-field
-          label="Description"
-          textarea
-          rows="3"
-          v-model="description">
-        </v-text-field>
+        <v-layout row wrap>
+          <v-flex xs11>
+            <v-select
+              label="Payee"
+              :items="$repo.payees()"
+              item-text="name"
+              item-value="id"
+              v-model="payeeId"
+              autocomplete
+              autofocus
+              v-if="!showNewPayeeField">
+            </v-select>
+            <v-text-field
+              label="New Payee"
+              v-model="newPayeeName"
+              v-if="showNewPayeeField">
+            </v-text-field>
+          </v-flex>
+          <v-flex xs1>
+            <v-btn icon class="blue--text darken-1 mt-3" @click="adaptPayeeField">
+              <v-icon>compare_arrows</v-icon>
+            </v-btn>
+          </v-flex>
+          <v-flex xs12>
+            <v-select
+              label="Category"
+              :items="$repo.categories()"
+              item-text="name"
+              item-value="id"
+              v-model="categoryId"
+              autocomplete
+              required>
+            </v-select>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              label="Description"
+              textarea
+              rows="3"
+              v-model="description">
+            </v-text-field>
+          </v-flex>
+        </v-layout>
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
@@ -81,7 +104,9 @@ export default {
       payeeId: '',
       categoryId: '',
       description: '',
-      isBankTransfer: false
+      isBankTransfer: false,
+      showNewPayeeField: false,
+      newPayeeName: ''
     }
   },
   methods: {
@@ -89,10 +114,21 @@ export default {
       this.$emit('closed')
     },
     updateTransaction() {
-      this.transaction.payeeId = this.payeeId
+      if (this.newPayeeName) {
+        let newPayee = this.$repo.addPayee(this.newPayeeName)
+        this.transaction.payeeId = newPayee.id
+      } else {
+        this.transaction.payeeId = this.payeeId
+      }
       this.transaction.fromId = this.categoryId
       this.transaction.desc = this.description
       this.$emit('saved')
+    },
+    adaptPayeeField() {
+      this.showNewPayeeField = !this.showNewPayeeField
+      if (!this.showNewPayeeField) {
+        this.newPayeeName = ''
+      }
     }
   },
   watch: {
@@ -106,6 +142,8 @@ export default {
         } else {
           this.payeeId = newTransaction.payeeId
         }
+        this.showNewPayeeField = false
+        this.newPayeeName = ''
       }
     },
     isBankTransfer: function(isTransfer) {

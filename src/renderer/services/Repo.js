@@ -9,14 +9,17 @@ export default class Repo {
 
   initCounters() {
     this.counters = {}
-    this.counters.transaction = this.findNextTransactionCounter()
+    this.counters.transaction = this.findNextCounter(this.transactions())
+    this.counters.payee = this.findNextCounter(this.payees())
   }
 
-  findNextTransactionCounter() {
-    let lastCounter = _.maxBy(this.transactions(), 'id').id
-    // we get an ID like "T000000000000005922"
-    // let's remove the T, multiply by 1 to turn it into a number, and add 1 to get the next counter
-    return lastCounter.substring(1) * 1 + 1
+  findNextCounter(list) {
+    let maxId = _.chain(list)
+      // we map the ID - which is like "T5922" - to an integer
+      .map(t => t.id.substring(1) * 1)
+      .max()
+      .value()
+    return maxId + 1
   }
 
   nextTransactionID() {
@@ -25,6 +28,14 @@ export default class Repo {
     this.counters.transaction++
     // and return the new counter, with the appropriate format 'T3782034'
     return 'T' + nextCounter
+  }
+
+  nextPayeeID() {
+    let nextCounter = this.counters.payee
+    // increase the counter for next ID
+    this.counters.payee++
+    // and return the new counter, with the appropriate format 'P3782034'
+    return 'P' + nextCounter
   }
 
   isLoaded() {
@@ -67,6 +78,16 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
+  addPayee(payeeName) {
+    let payeeId = this.nextPayeeID()
+    let payee = {
+      id: payeeId,
+      name: payeeName
+    }
+    this.storage.repo.payees[payeeId] = payee
+    return payee
+  }
+
   deleteTransaction(transaction) {
     delete this.storage.repo.transactions[transaction.id]
   }
@@ -106,7 +127,7 @@ export default class Repo {
 
   replaceCardPayments(accountId, transactionToReplace, basicTransactions, cb) {
     let transactionsAmount = _.chain(basicTransactions)
-      .map(t => t.credit == null ? -t.debit : t.credit)
+      .map(t => (t.credit == null ? -t.debit : t.credit))
       .reduce((a, b) => a + b, 0)
       .value()
     if (transactionsAmount === transactionToReplace.amount) {
@@ -118,7 +139,9 @@ export default class Repo {
       // we can't replace, let's return an error
       cb(
         new Error(
-          `The sum of the transactions (${transactionsAmount}) does not match the sum of card payments (${transactionToReplace.amount}).`
+          `The sum of the transactions (${transactionsAmount}) does not match the sum of card payments (${
+            transactionToReplace.amount
+          }).`
         )
       )
     }
