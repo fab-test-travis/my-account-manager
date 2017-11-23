@@ -17,9 +17,10 @@
             class="grey--text">
             <i>{{ this.transaction.stagedDesc }}</i>
           </span>
+          <v-switch label="Bank Transfer" v-model="isBankTransfer"></v-switch>
         </div>
       </v-card-title>
-      <v-card-text v-if="$format.isTransfer(this.transaction)">
+      <v-card-text v-if="isBankTransfer">
         <v-select
           :label="($format.transactionAmount(this.transaction, this.account) > 0 ? 'From ' : 'To ') + ' Bank Account'"
           :items="$repo.bankAccounts()"
@@ -79,7 +80,8 @@ export default {
     return {
       payeeId: '',
       categoryId: '',
-      description: ''
+      description: '',
+      isBankTransfer: false
     }
   },
   methods: {
@@ -96,9 +98,19 @@ export default {
   watch: {
     transaction: function(newTransaction) {
       if (newTransaction) {
-        this.payeeId = newTransaction.payeeId
+        this.isBankTransfer = this.$format.isTransfer(newTransaction)
         this.categoryId = newTransaction.fromId
         this.description = newTransaction.desc
+        if (this.isBankTransfer) {
+          this.payeeId = ''
+        } else {
+          this.payeeId = newTransaction.payeeId
+        }
+      }
+    },
+    isBankTransfer: function(isTransfer) {
+      if (isTransfer) {
+        this.payeeId = ''
       }
     }
   }
