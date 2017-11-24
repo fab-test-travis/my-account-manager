@@ -41,12 +41,21 @@ export default class Formatter {
   // Label for a transaction that is a transfer
   transferLabel(transaction, accountId) {
     if (this.isTransfer(transaction)) {
-      return (
-        'Virement ' +
-        (accountId === transaction.fromId
-          ? 'depuis ' + this.categoryName(transaction.toId)
-          : 'vers ' + this.categoryName(transaction.fromId))
-      )
+      if (accountId === transaction.fromId) {
+        return (
+          'Virement ' +
+          (transaction.amount > 0
+            ? 'vers ' + this.categoryName(transaction.toId)
+            : 'depuis ' + this.categoryName(transaction.toId))
+        )
+      } else {
+        return (
+          'Virement ' +
+          (transaction.amount > 0
+            ? 'depuis ' + this.categoryName(transaction.fromId)
+            : 'vers ' + this.categoryName(transaction.fromId))
+        )
+      }
     } else {
       return 'PROBLEM: this transaction is not a transfer.'
     }
