@@ -50,7 +50,7 @@
             </div>
           </div>
           <div>
-            <v-btn icon class="blue--text darken-1">
+            <v-btn icon class="blue--text darken-1" @click="switchFavorite">
               <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
             </v-btn>
             <synchronize-modal :account="getAccountId()" @saved="refreshAccountData"></synchronize-modal>
@@ -208,6 +208,9 @@ export default {
     refreshAccountData() {
       this.transactions = this.retrieveTransactions()
       this.accountBalance = this.computeAccountBalance()
+    },
+    switchFavorite() {
+      this.$repo.changeFavorite(this.getAccountId())
     },
     // methods to manage the edition of transactions
     openEditModal(transaction) {

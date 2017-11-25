@@ -83,6 +83,11 @@ export default class Repo {
     return this.bankAccount(transaction.toId) != null && this.bankAccount(transaction.fromId) != null
   }
 
+  changeFavorite(accountId) {
+    let isFavorite = this.bankAccount(accountId).favorite
+    this.bankAccount(accountId).favorite = !isFavorite
+  }
+
   addPayee(payeeName) {
     let payeeId = this.nextPayeeID()
     let payee = {
