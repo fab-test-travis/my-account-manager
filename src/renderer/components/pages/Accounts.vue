@@ -119,6 +119,9 @@
                     {{ props.item.stagedDesc ? 'cached' : 'done' }}
                   </v-icon>
                 </v-btn>
+                <v-snackbar :timeout="2000" top right v-model="editActionSnackbar">
+                  Cannot edit bank transfer.
+                </v-snackbar>
               </td>
             </template>
           </v-data-table>
@@ -173,7 +176,8 @@ export default {
       accountBalance: this.computeAccountBalance(),
       editTransaction: null,
       editTransactionModal: false,
-      editCardModal: false
+      editCardModal: false,
+      editActionSnackbar: false
     }
   },
   computed: {
@@ -207,7 +211,9 @@ export default {
     },
     // methods to manage the edition of transactions
     openEditModal(transaction) {
-      if (this.$format.isCardPayments(transaction)) {
+      if (this.$format.isTransfer(transaction)) {
+        this.editActionSnackbar = true
+      } else if (this.$format.isCardPayments(transaction)) {
         this.openCardModal(transaction)
       } else {
         this.openTransactionModal(transaction)
