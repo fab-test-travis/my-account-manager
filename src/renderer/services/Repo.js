@@ -78,6 +78,26 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
+  transactionsForAccount(accountId) {
+    return _.chain(this.transactions())
+      .filter(t => accountId === t.fromId || accountId === t.toId)
+      .value()
+  }
+
+  transactionsForCategory(categoryId) {
+    return _.chain(this.transactions())
+      .filter(t => categoryId === t.fromId)
+      .value()
+  }
+
+  getAccountBalance(accountId) {
+    return _.chain(this.transactions())
+      .filter(t => accountId === t.fromId || accountId === t.toId)
+      .map(t => (accountId === t.toId ? t.amount : -t.amount))
+      .reduce((a, b) => a + b, 0)
+      .value()
+  }
+
   // Tells whether the transaction is a transfer or not
   isTransfer(transaction) {
     return this.bankAccount(transaction.toId) != null && this.bankAccount(transaction.fromId) != null
@@ -155,19 +175,5 @@ export default class Repo {
         )
       )
     }
-  }
-
-  transactionsForAccount(accountId) {
-    return _.chain(this.transactions())
-      .filter(t => accountId === t.fromId || accountId === t.toId)
-      .value()
-  }
-
-  getAccountBalance(accountId) {
-    return _.chain(this.transactions())
-      .filter(t => accountId === t.fromId || accountId === t.toId)
-      .map(t => (accountId === t.toId ? t.amount : -t.amount))
-      .reduce((a, b) => a + b, 0)
-      .value()
   }
 }

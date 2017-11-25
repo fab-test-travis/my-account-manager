@@ -27,6 +27,11 @@
               v-tooltip:top="{ html: props.item.id }">
               {{ props.item.fullName }}
             </td>
+            <td class="text-xs-right">
+              <span :class=" props.item.subAccountIds == null && props.item.transactionCount === 0 ? 'red--text' : ''">
+                {{ props.item.transactionCount }}
+              </span>
+            </td>
           </template>
         </v-data-table>
 
@@ -42,7 +47,10 @@ export default {
   name: 'categories',
   data() {
     return {
-      headers: [{ text: 'Name', value: 'fullName', align: 'left' }],
+      headers: [
+        { text: 'Name', value: 'fullName', align: 'left' },
+        { text: 'Transaction Count', value: 'transactionCount', align: 'right' }
+      ],
       pagination: {
         size: [12, 25, 50, 100],
         sort: {
@@ -57,7 +65,12 @@ export default {
     categories() {
       return this.$repo.isLoaded()
         ? _.chain(this.$repo.categories())
-            .map(c => Object.assign({}, c, { fullName: this.$format.categoryFullName(c.id) }))
+            .map(c =>
+              Object.assign({}, c, {
+                fullName: this.$format.categoryFullName(c.id),
+                transactionCount: this.$repo.transactionsForCategory(c.id).length
+              })
+            )
             .value()
         : []
     }
