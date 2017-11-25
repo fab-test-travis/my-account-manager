@@ -169,7 +169,7 @@ export default {
           descending: true
         }
       },
-      favoritesOnly: true,
+      favoritesOnly: false,
       showClosed: false,
       search: '',
       transactions: this.retrieveTransactions(),
