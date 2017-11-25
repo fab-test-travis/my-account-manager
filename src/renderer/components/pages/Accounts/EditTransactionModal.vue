@@ -50,6 +50,8 @@
               item-text="name"
               item-value="id"
               v-model="categoryId"
+              :hint="$format.categoryFullName(this.categoryId)"
+              persistent-hint
               autocomplete
               required>
             </v-select>

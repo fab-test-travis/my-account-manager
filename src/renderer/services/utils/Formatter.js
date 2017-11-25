@@ -75,6 +75,17 @@ export default class Formatter {
     return category == null ? '-- category? --' : category.name
   }
 
+  // Returns the name of the category, with name of all parent categories
+  categoryFullName(id) {
+    let categoryName = this.categoryName(id)
+    let parentId = this.repo.category(id).parentId
+    if (parentId) {
+      return this.categoryFullName(parentId) + ' > ' + categoryName
+    } else {
+      return categoryName
+    }
+  }
+
   month(date) {
     let m = date.substring(5, 7)
     switch (m) {
