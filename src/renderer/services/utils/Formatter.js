@@ -26,12 +26,6 @@ export default class Formatter {
     return amount < 0 ? 'red--text' : 'green--text'
   }
 
-  // Tells whether the transaction is a transfer or not
-  // => Not really a format method... should probably be refactored and put somewhere else
-  isTransfer(transaction) {
-    return this.repo.bankAccount(transaction.toId) != null && this.repo.bankAccount(transaction.fromId) != null
-  }
-
   // Tells whether the transaction is a list of monthly card payments
   // => Same as previous one: not really a format method... should probably be refactored and put somewhere else
   isCardPayments(transaction) {
@@ -40,7 +34,7 @@ export default class Formatter {
 
   // Label for a transaction that is a transfer
   transferLabel(transaction, accountId) {
-    if (this.isTransfer(transaction)) {
+    if (this.repo.isTransfer(transaction)) {
       if (accountId === transaction.fromId) {
         return (
           'Virement ' +

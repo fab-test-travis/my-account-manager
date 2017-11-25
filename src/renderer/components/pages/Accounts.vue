@@ -96,7 +96,7 @@
                 <div>{{ $format.year(props.item.date) }}</div>
               </td>
               <td class="text-xs-left">
-                <div v-if="$format.isTransfer(props.item)">
+                <div v-if="$repo.isTransfer(props.item)">
                   {{ $format.transferLabel(props.item, selectedAccount) }}
                 </div>
                 <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
@@ -211,7 +211,7 @@ export default {
     },
     // methods to manage the edition of transactions
     openEditModal(transaction) {
-      if (this.$format.isTransfer(transaction)) {
+      if (this.$repo.isTransfer(transaction)) {
         this.editActionSnackbar = true
       } else if (this.$format.isCardPayments(transaction)) {
         this.openCardModal(transaction)

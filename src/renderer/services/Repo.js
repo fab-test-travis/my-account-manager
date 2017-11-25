@@ -78,6 +78,11 @@ export default class Repo {
     return _.values(this.storage.repo.transactions)
   }
 
+  // Tells whether the transaction is a transfer or not
+  isTransfer(transaction) {
+    return this.bankAccount(transaction.toId) != null && this.bankAccount(transaction.fromId) != null
+  }
+
   addPayee(payeeName) {
     let payeeId = this.nextPayeeID()
     let payee = {
