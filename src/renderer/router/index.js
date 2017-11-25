@@ -11,7 +11,7 @@ export default new Router({
       children: [
         {
           path: '/',
-          component: require('@/components/pages/Welcome')
+          component: require('@/components/pages/Dashboard')
         },
         {
           path: 'dashboards',
