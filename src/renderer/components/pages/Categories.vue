@@ -22,10 +22,11 @@
                       class="elevation-1">
           <template slot="items"
                     scope="props">
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-right">{{ props.item.id }}</td>
-            <td class="text-xs-right">{{ props.item.parentId }}</td>
-            <td class="text-xs-right">{{ props.item.subAccountIds }}</td>
+            <td 
+              class="text-xs-left"
+              v-tooltip:top="{ html: props.item.id }">
+              {{ props.item.fullName }}
+            </td>
           </template>
         </v-data-table>
 
@@ -35,29 +36,33 @@
 </template>
 
 <script>
+import * as _ from 'lodash'
+
 export default {
   name: 'categories',
   data() {
     return {
-      headers: [
-        { text: 'Name', value: 'name', align: 'left' },
-        { text: 'ID', value: 'id' },
-        { text: 'Parent', value: 'parentId' },
-        { text: 'Sub Accounts', value: 'subAccountIds' }
-      ],
+      headers: [{ text: 'Name', value: 'fullName', align: 'left' }],
       pagination: {
         size: [12, 25, 50, 100],
         sort: {
-          sortBy: 'name',
+          sortBy: 'fullName',
           descending: false
         }
       },
-      search: '',
-      categories: this.$repo.isLoaded() ? this.$repo.categories() : []
+      search: ''
+    }
+  },
+  computed: {
+    categories() {
+      return this.$repo.isLoaded()
+        ? _.chain(this.$repo.categories())
+            .map(c => Object.assign({}, c, { fullName: this.$format.categoryFullName(c.id) }))
+            .value()
+        : []
     }
   }
 }
-
 </script>
 
 <style>
