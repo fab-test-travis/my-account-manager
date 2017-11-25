@@ -99,7 +99,7 @@
                 <div v-if="$repo.isTransfer(props.item)">
                   {{ $format.transferLabel(props.item, selectedAccount) }}
                 </div>
-                <div v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
+                <div v-if="props.item.payeeId" v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
                 <div v-if="props.item.stagedDesc !== ''" :class="props.item.fromId === '' ? 'amber--text' : 'grey--text'">{{ props.item.stagedDesc }}</div>
               </td>
