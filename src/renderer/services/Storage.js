@@ -1,25 +1,39 @@
+import path from 'path'
 import * as jsonfile from 'jsonfile'
 
-const repoFile = '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/storage/Comptes.json'
-const payeeFinderConfFile = '/Users/bellingard/Repos/_PERSO_/_resources_/some-tests/storage/PayeeFinder.json'
-
 export default class Storage {
-  constructor() {
-    // Let's hard code the path during the first development stages
-    this.repo = jsonfile.readFileSync(repoFile, 'UTF-8')
-    this.payeeFinderConf = jsonfile.readFileSync(payeeFinderConfFile, 'UTF-8')
+  constructor(config) {
+    this.config = config
+    try {
+      this.init()
+    } catch (e) {
+      // could not open one of the storage files: will need to open from the UI
+    }
   }
 
-  repo() {
-    return this.repo
+  /**
+   * Read all the storage files to load data
+   */
+  init() {
+    // Base storage folder
+    let storageFolder = this.config.props.storageFolder
+    this.repoFile = path.join(storageFolder, 'Comptes.json')
+    this.payeeFinderConfFile = path.join(storageFolder, 'PayeeFinder.json')
+    // Let's read the storage files
+    this.repo = jsonfile.readFileSync(this.repoFile, 'UTF-8')
+    this.payeeFinderConf = jsonfile.readFileSync(this.payeeFinderConfFile, 'UTF-8')
   }
+
+  // repo() {
+  //   return this.repo
+  // }
 
   payeeFinders() {
     return this.payeeFinderConf
   }
 
   savePayeeFinders(cb) {
-    jsonfile.writeFile(payeeFinderConfFile, this.payeeFinders(), 'UTF-8', cb)
+    jsonfile.writeFile(this.payeeFinderConfFile, this.payeeFinders(), 'UTF-8', cb)
   }
 
   reload(cb) {
@@ -27,7 +41,7 @@ export default class Storage {
   }
 
   loadRepo(cb) {
-    jsonfile.readFile(repoFile, 'UTF-8', (err, obj) => {
+    jsonfile.readFile(this.repoFile, 'UTF-8', (err, obj) => {
       if (!err) {
         this.repo = obj
         this.loadPayeeConf(cb)
@@ -38,7 +52,7 @@ export default class Storage {
   }
 
   loadPayeeConf(cb) {
-    jsonfile.readFile(payeeFinderConfFile, 'UTF-8', (err, obj) => {
+    jsonfile.readFile(this.payeeFinderConfFile, 'UTF-8', (err, obj) => {
       if (!err) {
         this.payeeFinderConf = obj
         cb()

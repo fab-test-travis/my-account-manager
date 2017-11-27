@@ -17,7 +17,6 @@
         <v-icon>home</v-icon>
       </v-btn>
       <v-icon>help</v-icon>
-
     </v-toolbar>
 
     <router-view></router-view>
@@ -31,7 +30,6 @@ export default {
   name: 'landing-page',
   components: { NavBar }
 }
-
 </script>
 
 <style>

@@ -1,5 +1,25 @@
 <template>
   <main>
+    <v-dialog v-if="!this.$repo.isLoaded()" v-model="selectFolder" persistent width="50%">
+      <v-card>
+        <v-card-title>
+          <div>
+            <span class="headline">Open Your Account File</span>
+          </div>
+        </v-card-title>
+        <v-card-text class="ml-4">
+          <v-icon class="mr-4">folder_open</v-icon>
+          <input v-on:change="getFileName" id="accountFile" type="file">
+          <br/><br/>
+          {{ this.accountFile }}
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn class="blue--text darken-1" flat @click.native="loadData()">Open</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
     <v-container fluid>
       <v-layout row
                 wrap>
@@ -41,27 +61,48 @@
 </template>
 
 <script>
+import path from 'path'
 import * as _ from 'lodash'
 
 export default {
   name: 'dashboard',
   data() {
     return {
-      items: this.$repo.isLoaded() ? this.$repo.bankAccounts() : [],
-      favoritesOnly: true
+      favoritesOnly: true,
+      accountFile: '',
+      selectFolder: !this.$repo.isLoaded()
     }
   },
   computed: {
     accounts() {
-      return this.$repo.isLoaded()
-        ? _.chain(this.$repo.bankAccounts(this.showClosed))
+      // Warn: need to rely on 'this.selectFolder' to be sure that
+      // the component will get refreshed once the folder is selected
+      return this.selectFolder
+        ? []
+        : _.chain(this.$repo.bankAccounts(this.showClosed))
             .filter(a => (this.favoritesOnly ? a.favorite : true))
             .value()
-        : []
+    }
+  },
+  methods: {
+    getFileName(e) {
+      var files = e.target.files
+      this.accountFile = files[0].path
+    },
+    loadData() {
+      this.$appConfig.props.storageFolder = path.dirname(this.accountFile)
+      try {
+        this.$storage.init()
+        this.$repo.init()
+        this.$appConfig.save()
+        this.selectFolder = false
+        this.accountFile = ''
+      } catch (e) {
+        console.error(e)
+      }
     }
   }
 }
-
 </script>
 
 <style>

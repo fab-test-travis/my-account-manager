@@ -4,13 +4,19 @@ export default class Repo {
   constructor(storage, payeeFinder) {
     this.storage = storage
     this.payeeFinder = payeeFinder
-    this.initCounters()
+    this.init()
   }
 
-  initCounters() {
-    this.counters = {}
-    this.counters.transaction = this.findNextCounter(this.transactions())
-    this.counters.payee = this.findNextCounter(this.payees())
+  /**
+   * Initialize the repo:
+   * - counters to create new entities
+   */
+  init() {
+    if (this.isLoaded()) {
+      this.counters = {}
+      this.counters.transaction = this.findNextCounter(this.transactions())
+      this.counters.payee = this.findNextCounter(this.payees())
+    }
   }
 
   findNextCounter(list) {
