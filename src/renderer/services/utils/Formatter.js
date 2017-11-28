@@ -29,7 +29,7 @@ export default class Formatter {
   // Tells whether the transaction is a list of monthly card payments
   // => Same as previous one: not really a format method... should probably be refactored and put somewhere else
   isCardPayments(transaction) {
-    return transaction.stagedDesc && transaction.stagedDesc.indexOf('Depenses Carte') >= 0
+    return transaction.stagedDesc != null && transaction.stagedDesc.indexOf('Depenses Carte') >= 0
   }
 
   // Label for a transaction that is a transfer
