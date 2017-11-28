@@ -44,7 +44,7 @@ script:
 #- xvfb-maybe node_modules/.bin/karma start test/unit/karma.conf.js
 #- yarn run pack && xvfb-maybe node_modules/.bin/mocha test/e2e
 - yarn run build
-- sonar-scanner -Dsonar.projectKey=my-account-manager -Dsonar.projectVersion=1.0.0 -Dsonar.sources=src
+- yarn run analyze
 branches:
   only:
   - master
