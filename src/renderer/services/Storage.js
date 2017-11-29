@@ -24,10 +24,6 @@ export default class Storage {
     this.payeeFinderConf = jsonfile.readFileSync(this.payeeFinderConfFile, 'UTF-8')
   }
 
-  // repo() {
-  //   return this.repo
-  // }
-
   payeeFinders() {
     return this.payeeFinderConf
   }

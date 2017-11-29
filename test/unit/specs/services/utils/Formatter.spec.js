@@ -1,8 +1,8 @@
 import Formatter from '@/services/utils/Formatter'
 
-describe('Formatter', () => {
-  const f = new Formatter()
+const f = new Formatter()
 
+describe('Formatter', () => {
   it('should return year', () => {
     let date = '2017-08-14'
     expect(f.year(date)).to.equal('2017')
