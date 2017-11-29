@@ -1,27 +1,8 @@
-# my-account-manager
+# My Account Manager
 
-> My Account Manager
+Personal project to have fun coding in JS + Vue on Electron. And hopeful to migrate it soon to TypeScript.
 
-#### Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:9080
-npm run dev
-
-# build electron application for production
-npm run build
-
-# run unit & end-to-end tests
-npm test
-
-
-# lint all JS/Vue component files in `src/`
-npm run lint
-
-```
+[![Build status](https://travis-ci.org/bellingard/my-account-manager.svg?branch=master)](https://travis-ci.org/bellingard/my-account-manager) [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=my-account-manager)](https://sonarcloud.io/dashboard/index/my-account-manager) [![Release](https://img.shields.io/github/release/bellingard/my-account-manager.svg)](https://github.com/bellingard/my-account-manager/releases)
 
 ---
 
