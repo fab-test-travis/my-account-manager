@@ -9,7 +9,6 @@
       </v-avatar>
       <v-toolbar-title>
         My Account Manager
-        <v-icon>monetization_on</v-icon>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon
