@@ -11,10 +11,10 @@
     </div>
     <div>
       <v-btn class="grey darken-3"
-            :loading="savePayeeConfStatus"
-            :disabled="savePayeeConfStatus"
-            @click.native="savePayeeConf()">
-        Save Payee Conf
+            :loading="saveStatus"
+            :disabled="saveStatus"
+            @click.native="save()">
+        Save
         <v-icon right>save</v-icon>
       </v-btn>
     </div>
@@ -34,7 +34,7 @@ export default {
   data() {
     return {
       reloadStatus: false,
-      savePayeeConfStatus: false
+      saveStatus: false
     }
   },
   methods: {
@@ -47,13 +47,13 @@ export default {
         this.reloadStatus = false
       })
     },
-    savePayeeConf() {
-      this.savePayeeConfStatus = true
-      this.$storage.savePayeeFinders(err => {
+    save() {
+      this.saveStatus = true
+      this.$storage.save(err => {
         if (err) {
           console.error(err)
         }
-        this.savePayeeConfStatus = false
+        this.saveStatus = false
       })
     },
     shrinkCategories() {

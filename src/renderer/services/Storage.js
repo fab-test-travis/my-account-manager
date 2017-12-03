@@ -28,32 +28,66 @@ export default class Storage {
     return this.payeeFinderConf
   }
 
+  /**
+   * Saves everything:
+   *   - repo
+   *   - payee finders
+   * If there's an error, it is passed in an 'err' parameter of the callback
+   * @param {*} cb the callback
+   */
+  save(cb) {
+    this.saveRepo(err => {
+      if (err) {
+        cb(err)
+      } else {
+        this.savePayeeFinders(cb)
+      }
+    })
+  }
+
+  saveRepo(cb) {
+    jsonfile.writeFile(this.repoFile, this.repo, 'UTF-8', cb)
+  }
+
   savePayeeFinders(cb) {
     jsonfile.writeFile(this.payeeFinderConfFile, this.payeeFinders(), 'UTF-8', cb)
   }
 
+  /**
+   * Loads everything:
+   *   - repo
+   *   - payee finders
+   * If there's an error, it is passed in an 'err' parameter of the callback
+   * @param {*} cb the callback
+   */
   reload(cb) {
-    this.loadRepo(cb)
+    this.loadRepo(err => {
+      if (err) {
+        cb(err)
+      } else {
+        this.loadPayeeConf(cb)
+      }
+    })
   }
 
   loadRepo(cb) {
     jsonfile.readFile(this.repoFile, 'UTF-8', (err, obj) => {
-      if (!err) {
-        this.repo = obj
-        this.loadPayeeConf(cb)
-      } else {
+      if (err) {
         cb(err)
+      } else {
+        this.repo = obj
+        cb()
       }
     })
   }
 
   loadPayeeConf(cb) {
     jsonfile.readFile(this.payeeFinderConfFile, 'UTF-8', (err, obj) => {
-      if (!err) {
+      if (err) {
+        cb(err)
+      } else {
         this.payeeFinderConf = obj
         cb()
-      } else {
-        cb(err)
       }
     })
   }
