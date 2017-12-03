@@ -106,24 +106,44 @@ describe('Formatter', () => {
   })
 
   it('should return category name', () => {
+    // let f = new Formatter({
+    //   category(id) {
+    //     if (id === '1') {
+    //       return {
+    //         name: 'cat'
+    //       }
+    //     } else {
+    //       return null
+    //     }
+    //   },
+    //   bankAccount(id) {
+    //     if (id === '2') {
+    //       return {
+    //         name: 'bank'
+    //       }
+    //     } else {
+    //       return null
+    //     }
+    //   }
+    // })
     let f = new Formatter({
-      category(id) {
-        if (id === '1') {
-          return {
-            name: 'cat'
-          }
-        } else {
-          return null
+      categories: {
+        '1': {
+          id: '1',
+          name: 'cat'
         }
       },
-      bankAccount(id) {
-        if (id === '2') {
-          return {
-            name: 'bank'
-          }
-        } else {
-          return null
+      bankAccounts: {
+        '2': {
+          id: '2',
+          name: 'bank'
         }
+      },
+      category(id) {
+        return this.categories[id]
+      },
+      bankAccount(id) {
+        return this.bankAccounts[id]
       }
     })
     expect(f.categoryName('1')).is.equal('cat')
@@ -133,22 +153,27 @@ describe('Formatter', () => {
 
   it('should return full category name', () => {
     let f = new Formatter({
-      category(id) {
-        if (id === '1') {
-          return {
-            id: '1',
-            name: 'cat',
-            parentId: '2'
-          }
-        } else {
-          return {
-            id: '2',
-            name: 'parent'
-          }
+      categories: {
+        '1': {
+          id: '1',
+          name: 'cat',
+          parentId: '2'
+        },
+        '2': {
+          id: '2',
+          name: 'parent'
         }
+      },
+      bankAccounts: {},
+      category(id) {
+        return this.categories[id]
+      },
+      bankAccount(id) {
+        return this.bankAccounts[id]
       }
     })
     expect(f.categoryFullName('1')).is.equal('parent > cat')
     expect(f.categoryFullName('2')).is.equal('parent')
+    expect(f.categoryFullName('3')).is.equal('-- category? --')
   })
 })

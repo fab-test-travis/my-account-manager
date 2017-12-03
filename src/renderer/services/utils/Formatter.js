@@ -78,7 +78,7 @@ export default class Formatter {
   // Returns the name of the category, with name of all parent categories
   categoryFullName(id) {
     let categoryName = this.categoryName(id)
-    let parentId = this.repo.category(id).parentId
+    let parentId = this.repo.category(id) && this.repo.category(id).parentId
     if (parentId) {
       return this.categoryFullName(parentId) + ' > ' + categoryName
     } else {
