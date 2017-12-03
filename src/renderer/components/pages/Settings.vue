@@ -10,6 +10,9 @@
       </v-btn>
     </div>
     <div>
+      <v-snackbar :timeout="2000" top right v-model="cantSaveSnackbar">
+        Cannot save: some staged transactions don't have a category.
+      </v-snackbar>
       <v-btn class="grey darken-3"
             :loading="saveStatus"
             :disabled="saveStatus"
@@ -34,7 +37,8 @@ export default {
   data() {
     return {
       reloadStatus: false,
-      saveStatus: false
+      saveStatus: false,
+      cantSaveSnackbar: false
     }
   },
   methods: {
@@ -48,13 +52,18 @@ export default {
       })
     },
     save() {
-      this.saveStatus = true
-      this.$storage.save(err => {
-        if (err) {
-          console.error(err)
-        }
-        this.saveStatus = false
-      })
+      if (this.$repo.hasNotClassifiedStagedTransaction()) {
+        this.cantSaveSnackbar = true
+      } else {
+        this.saveStatus = true
+        this.$repo.unstageAllTransactions()
+        this.$storage.save(err => {
+          if (err) {
+            console.error(err)
+          }
+          this.saveStatus = false
+        })
+      }
     },
     shrinkCategories() {
       this.$repo.categories().forEach(category => {

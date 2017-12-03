@@ -142,6 +142,23 @@ export default class Repo {
     }
   }
 
+  hasNotClassifiedStagedTransaction() {
+    for (let t of this.transactions()) {
+      if (t.stagedDesc && t.fromId === '') {
+        return true
+      }
+    }
+    return false
+  }
+
+  unstageAllTransactions() {
+    this.transactions().forEach(t => {
+      if (t.stagedDesc) {
+        delete t.stagedDesc
+      }
+    })
+  }
+
   /**
    * Synchronises transactions retrieved from a CSV file. (see CsvLoader)
    * @param {*} accountId the account to add transactions to
@@ -161,6 +178,13 @@ export default class Repo {
     })
   }
 
+  /**
+   * Replaces a card payment entry by transactions retrieved from a CSV file
+   * @param {*} accountId the account on which the transaction applies
+   * @param {*} transactionToReplace the card payment transaction to replace
+   * @param {*} basicTransactions Transactions that will replace the card payment transaction
+   * @param {*} cb the callback if there's an error
+   */
   replaceCardPayments(accountId, transactionToReplace, basicTransactions, cb) {
     let transactionsAmount = _.chain(basicTransactions)
       .map(t => (t.credit == null ? -t.debit : t.credit))
