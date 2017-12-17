@@ -10,7 +10,7 @@
     <div v-if="mini === false" class="pa-5 text-xs-center">
       <strong>My Account Manager</strong>
       <br/>
-      v. 1.0.0
+      v. {{ this.appVersion }}
     </div>
 
     <v-divider></v-divider>
@@ -76,6 +76,7 @@ export default {
   name: 'nav-bar',
   data() {
     return {
+      appVersion: require('../../../package.json').version,
       mini: true,
       manageItems: [
         { icon: 'attach_money', text: 'Accounts', to: '/accounts' },
