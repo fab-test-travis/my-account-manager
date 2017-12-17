@@ -16,6 +16,8 @@ export default class Repo {
       this.counters = {}
       this.counters.transaction = this.findNextCounter(this.transactions())
       this.counters.payee = this.findNextCounter(this.payees())
+      // categories and bank accounts share the same pattern for ID (this comes from KMyMoney)
+      this.counters.category = this.findNextCounter(this.categories().concat(this.bankAccounts(true)))
     }
   }
 
@@ -44,6 +46,14 @@ export default class Repo {
     return 'P' + nextCounter
   }
 
+  nextCategoryID() {
+    let nextCounter = this.counters.category
+    // increase the counter for next ID
+    this.counters.category++
+    // and return the new counter, with the appropriate format 'P3782034'
+    return 'A' + nextCounter
+  }
+
   isLoaded() {
     return this.storage.repo != null
   }
@@ -60,11 +70,11 @@ export default class Repo {
     return this.storage.repo.payees[id]
   }
 
-  bankAccounts(showClosed = false) {
+  bankAccounts(listClosed = false) {
     let accounts = _.values(this.storage.repo.bankAccounts)
     return _.chain(accounts)
       .sortBy(['name'])
-      .filter(a => (showClosed ? true : !a.closed))
+      .filter(a => (listClosed ? true : !a.closed))
       .value()
   }
 
@@ -124,6 +134,25 @@ export default class Repo {
     return payee
   }
 
+  addCategory(categoryName, parentCategoryId) {
+    // let's create the new category
+    let catId = this.nextCategoryID()
+    let category = {
+      id: catId,
+      name: categoryName,
+      parentId: parentCategoryId
+    }
+    this.storage.repo.categories[catId] = category
+    // we also need to reference this category in its parent too
+    let parentCategory = this.storage.repo.categories[parentCategoryId]
+    if (!parentCategory.subAccountIds) {
+      parentCategory.subAccountIds = []
+    }
+    parentCategory.subAccountIds.push(catId)
+    // and finally return the category
+    return category
+  }
+
   deleteTransaction(transaction) {
     delete this.storage.repo.transactions[transaction.id]
   }
@@ -142,6 +171,9 @@ export default class Repo {
     }
   }
 
+  /**
+   * Returns true if some staged transactions have not been categorized yet.
+   */
   hasNotClassifiedStagedTransaction() {
     for (let t of this.transactions()) {
       if (t.stagedDesc && t.fromId === '') {
@@ -151,6 +183,9 @@ export default class Repo {
     return false
   }
 
+  /**
+   * Confirms that all transactions can be saved
+   */
   unstageAllTransactions() {
     this.transactions().forEach(t => {
       if (t.stagedDesc) {

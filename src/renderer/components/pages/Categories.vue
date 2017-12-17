@@ -4,6 +4,10 @@
       <v-layout row
                 wrap>
 
+        <v-snackbar :timeout="2000" top right v-model="categoryAddedSnackbar">
+          Category Added
+        </v-snackbar>
+
         <v-flex xs4>
           <v-text-field append-icon="search"
                         label="Search"
@@ -12,6 +16,9 @@
                         v-model="search"
                         class="">
           </v-text-field>
+        </v-flex>
+        <v-flex xs8 class="text-xs-right">
+          <add-category-modal @saved="categoryAdded"></add-category-modal>
         </v-flex>
 
         <v-data-table :headers="headers"
@@ -41,10 +48,12 @@
 </template>
 
 <script>
+import AddCategoryModal from './Categories/AddCategoryModal'
 import * as _ from 'lodash'
 
 export default {
   name: 'categories',
+  components: { AddCategoryModal },
   data() {
     return {
       headers: [
@@ -58,11 +67,18 @@ export default {
           descending: false
         }
       },
-      search: ''
+      search: '',
+      addedCategory: null,
+      categoryAddedSnackbar: false
     }
   },
   computed: {
     categories() {
+      // we rely on 'addedCategory' to be sure that the page gets refreshed
+      if (this.addedCategory) {
+        this.categoryAddedSnackbar = true
+        this.addedCategory = null
+      }
       return this.$repo.isLoaded()
         ? _.chain(this.$repo.categories())
             .map(c =>
@@ -73,6 +89,13 @@ export default {
             )
             .value()
         : []
+    }
+  },
+  methods: {
+    categoryAdded(newCategory) {
+      this.addedCategory = newCategory
+      // let's use the search to focus on the new category
+      this.search = newCategory.name
     }
   }
 }
