@@ -122,6 +122,7 @@ export default class Repo {
   changeFavorite(accountId) {
     let isFavorite = this.bankAccount(accountId).favorite
     this.bankAccount(accountId).favorite = !isFavorite
+    return !isFavorite
   }
 
   addPayee(payeeName) {

@@ -51,7 +51,7 @@
           </div>
           <div>
             <v-btn icon class="blue--text darken-1" @click="switchFavorite">
-              <v-icon>{{ $repo.bankAccount(selectedAccount).favorite ? 'star' : 'star_border' }}</v-icon>
+              <v-icon>{{ this.isFavorite ? 'star' : 'star_border' }}</v-icon>
             </v-btn>
             <synchronize-modal :account="getAccountId()" @saved="refreshAccountData"></synchronize-modal>
             <payee-finder-modal></payee-finder-modal>
@@ -172,6 +172,7 @@ export default {
       favoritesOnly: false,
       showClosed: false,
       search: '',
+      isFavorite: this.getAccountId() != null ? this.$repo.bankAccount(this.getAccountId()).favorite : false,
       transactions: this.retrieveTransactions(),
       accountBalance: this.computeAccountBalance(),
       editTransaction: null,
@@ -191,26 +192,27 @@ export default {
   },
   watch: {
     selectedAccount: function(newAccount) {
+      this.isFavorite = this.$repo.bankAccount(this.getAccountId()).favorite
       this.transactions = this.retrieveTransactions()
       this.accountBalance = this.computeAccountBalance()
     }
   },
   methods: {
+    getAccountId() {
+      return this.selectedAccount == null ? this.accountId : this.selectedAccount
+    },
     retrieveTransactions() {
       return this.getAccountId() != null ? this.$repo.transactionsForAccount(this.getAccountId()) : []
     },
     computeAccountBalance() {
       return this.getAccountId() != null ? this.$repo.getAccountBalance(this.getAccountId()) : ''
     },
-    getAccountId() {
-      return this.selectedAccount == null ? this.accountId : this.selectedAccount
-    },
     refreshAccountData() {
       this.transactions = this.retrieveTransactions()
       this.accountBalance = this.computeAccountBalance()
     },
     switchFavorite() {
-      this.$repo.changeFavorite(this.getAccountId())
+      this.isFavorite = this.$repo.changeFavorite(this.getAccountId())
     },
     // methods to manage the edition of transactions
     openEditModal(transaction) {
