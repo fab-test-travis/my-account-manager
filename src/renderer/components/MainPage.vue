@@ -2,8 +2,7 @@
   <v-app dark>
     <nav-bar></nav-bar>
 
-    <v-toolbar fixed
-               class="blue darken-1">
+    <v-toolbar app fixed clipped-left class="blue darken-1">
       <v-avatar>
         <img src="../assets/logo.png"/>
       </v-avatar>
@@ -18,7 +17,9 @@
       <v-icon>help</v-icon>
     </v-toolbar>
 
-    <router-view></router-view>
+    <v-content>
+      <router-view></router-view>
+    </v-content>
   </v-app>
 </template>
 

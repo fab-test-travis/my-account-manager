@@ -30,8 +30,7 @@
           <template slot="items"
                     scope="props">
             <td 
-              class="text-xs-left"
-              v-tooltip:top="{ html: props.item.id }">
+              class="text-xs-left">
               {{ props.item.fullName }}
             </td>
             <td class="text-xs-right">

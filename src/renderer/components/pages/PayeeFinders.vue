@@ -17,7 +17,6 @@
         <v-data-table :headers="headers"
                       :items="finders"
                       :rows-per-page-items="pagination.size"
-                      :pagination.sync="pagination.sort"
                       :search="search"
                       class="elevation-1">
           <template slot="items"

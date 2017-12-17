@@ -1,6 +1,5 @@
 <template>
-  <v-navigation-drawer permanent
-                       :mini-variant="mini">
+  <v-navigation-drawer app permanent fixed clipped :mini-variant="mini">
 
     <div :class="miniIconStyle">
       <v-toolbar-side-icon @click.stop="mini = !mini" class="grey--text">

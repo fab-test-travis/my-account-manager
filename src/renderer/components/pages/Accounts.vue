@@ -13,13 +13,13 @@
                     item-value="id">
           </v-select>
         </v-flex>
-        <v-flex xs2>
+        <v-flex xs2 class="pt-3">
           <v-switch label="Favorites"
                     v-model="favoritesOnly"
                     color="blue darken-1">
           </v-switch>
         </v-flex>
-        <v-flex xs2>
+        <v-flex xs2 class="pt-3">
           <v-switch label="Show closed"
                     v-model="showClosed"
                     color="blue darken-1">
@@ -90,8 +90,7 @@
                         :search="search">
             <template slot="items"
                       scope="props">
-              <td class="text-xs-left"
-                  v-tooltip:top="{ html: props.item.id }">
+              <td class="text-xs-left">
                 <div style="font-weight: bold; font-size: 16px; white-space: nowrap">{{ $format.dateInYear(props.item.date) }}</div>
                 <div>{{ $format.year(props.item.date) }}</div>
               </td>
@@ -99,7 +98,7 @@
                 <div v-if="$repo.isTransfer(props.item)">
                   {{ $format.transferLabel(props.item, selectedAccount) }}
                 </div>
-                <div v-if="props.item.payeeId" v-tooltip:left="{ html: props.item.payeeId }">{{ $format.payeeName(props.item.payeeId) }}</div>
+                <div v-if="props.item.payeeId">{{ $format.payeeName(props.item.payeeId) }}</div>
                 <div v-if="props.item.desc !== ''">{{ props.item.desc }}</div>
                 <div v-if="props.item.stagedDesc !== ''" :class="props.item.fromId === '' ? 'amber--text' : 'grey--text'">{{ props.item.stagedDesc }}</div>
               </td>
@@ -107,14 +106,14 @@
                 <div v-if="$repo.bankAccount(props.item.toId) != null && $repo.bankAccount(props.item.fromId) != null">
                   Virement
                 </div>
-                <div v-else v-tooltip:top="{ html: props.item.fromId }">
+                <div v-else>
                   {{ $format.categoryName(props.item.fromId) }}
                 </div>
               </td>
               <td class="text-xs-right" style="white-space: nowrap"
                   :class="$format.colorForAmount($format.transactionAmount(props.item, selectedAccount))">
                 {{ $format.transactionAmount(props.item, selectedAccount) }}
-                <v-btn icon small class="mb-1" v-tooltip:bottom="{ html: 'Edit' }" @click="openEditModal(props.item)">
+                <v-btn icon small class="mb-1" @click="openEditModal(props.item)">
                   <v-icon :class="props.item.stagedDesc ? 'state-icon amber--text' : 'state-icon grey--text'">
                     {{ props.item.stagedDesc ? 'cached' : 'done' }}
                   </v-icon>
