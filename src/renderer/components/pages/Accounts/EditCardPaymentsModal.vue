@@ -67,13 +67,6 @@ export default {
           console.error(err)
           this.close()
         } else {
-          // ##########################
-          // TODO => MUST check that the sum equals the amount of the transaction
-          // ##########################
-          // this.$repo.synchronizeTransactions(this.account, transactions)
-          // this.$repo.deleteTransaction(this.transaction)
-          // this.transactionsInput = ''
-          // this.$emit('saved')
           this.$repo.replaceCardPayments(this.account, this.transaction, transactions, err => {
             if (err) {
               this.errorMessage = err.message
