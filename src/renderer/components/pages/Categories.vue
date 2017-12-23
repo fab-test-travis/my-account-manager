@@ -28,7 +28,7 @@
                       :search="search"
                       class="elevation-1">
           <template slot="items"
-                    scope="props">
+                    slot-scope="props">
             <td 
               class="text-xs-left">
               {{ props.item.fullName }}

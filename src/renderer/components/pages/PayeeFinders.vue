@@ -20,7 +20,7 @@
                       :search="search"
                       class="elevation-1">
           <template slot="items"
-                    scope="props">
+                    slot-scope="props">
             <td class="text-xs-left">{{ props.item.expr }}</td>
             <td class="text-xs-right">
               {{ props.item.cat }}

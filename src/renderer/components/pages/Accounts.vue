@@ -89,7 +89,7 @@
                         :pagination.sync="pagination.sort"
                         :search="search">
             <template slot="items"
-                      scope="props">
+                      slot-scope="props">
               <td class="text-xs-left">
                 <div style="font-weight: bold; font-size: 16px; white-space: nowrap">{{ $format.dateInYear(props.item.date) }}</div>
                 <div>{{ $format.year(props.item.date) }}</div>

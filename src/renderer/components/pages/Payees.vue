@@ -21,7 +21,7 @@
                       :search="search"
                       class="elevation-1">
           <template slot="items"
-                    scope="props">
+                    slot-scope="props">
             <td class="text-xs-left">{{ props.item.name }}</td>
             <td class="text-xs-right">{{ props.item.id }}</td>
           </template>
