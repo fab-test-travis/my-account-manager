@@ -21,25 +21,27 @@
           <add-category-modal @saved="categoryAdded"></add-category-modal>
         </v-flex>
 
-        <v-data-table :headers="headers"
-                      :items="categories"
-                      :rows-per-page-items="pagination.size"
-                      :pagination.sync="pagination.sort"
-                      :search="search"
-                      class="elevation-1">
-          <template slot="items"
-                    slot-scope="props">
-            <td 
-              class="text-xs-left">
-              {{ props.item.fullName }}
-            </td>
-            <td class="text-xs-right">
-              <span :class=" props.item.subAccountIds == null && props.item.transactionCount === 0 ? 'red--text' : ''">
-                {{ props.item.transactionCount }}
-              </span>
-            </td>
-          </template>
-        </v-data-table>
+        <v-flex xs12>
+          <v-data-table :headers="headers"
+                        :items="categories"
+                        :rows-per-page-items="pagination.size"
+                        :pagination.sync="pagination.sort"
+                        :search="search"
+                        class="elevation-1">
+            <template slot="items"
+                      slot-scope="props">
+              <td 
+                class="text-xs-left">
+                {{ props.item.fullName }}
+              </td>
+              <td class="text-xs-right">
+                <span :class=" props.item.subAccountIds == null && props.item.transactionCount === 0 ? 'red--text' : ''">
+                  {{ props.item.transactionCount }}
+                </span>
+              </td>
+            </template>
+          </v-data-table>
+        </v-flex>
 
       </v-layout>
     </v-container>
