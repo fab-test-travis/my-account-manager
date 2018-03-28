@@ -81,6 +81,10 @@ app.on('activate', () => {
   }
 })
 
+if (a == '') {
+  
+}
+
 /**
  * Auto Updater
  *
