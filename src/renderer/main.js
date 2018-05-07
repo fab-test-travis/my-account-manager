@@ -31,3 +31,9 @@ new Vue({
 }).$mount('#app')
 
 alert('boom')
+
+var a
+
+if (a == '') {
+  
+}
