@@ -33,6 +33,7 @@ new Vue({
 alert('boom')
 
 var a
+alert('foo')
 
 if (a == '') {
   
