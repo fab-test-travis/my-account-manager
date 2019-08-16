@@ -12,6 +12,7 @@ export default class Repo {
    * - counters to create new entities
    */
   init() {
+    alert('')
     if (this.isLoaded()) {
       this.counters = {}
       this.counters.transaction = this.findNextCounter(this.transactions())
