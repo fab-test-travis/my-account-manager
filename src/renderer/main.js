@@ -29,12 +29,3 @@ new Vue({
   store,
   template: '<App/>'
 }).$mount('#app')
-
-alert('boom')
-
-var a
-alert('foo')
-
-if (a == '') {
-  
-}
