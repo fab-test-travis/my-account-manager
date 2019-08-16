@@ -7,6 +7,7 @@ export default class Storage {
     try {
       this.init()
     } catch (e) {
+      alert('')
       // could not open one of the storage files: will need to open from the UI
     }
   }
