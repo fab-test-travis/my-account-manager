@@ -22,6 +22,7 @@ export default class Config {
       this.createEmptyConfig()
       this.save()
     }
+    alert('')
   }
 
   save() {
