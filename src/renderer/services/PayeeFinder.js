@@ -14,6 +14,7 @@ export default class PayeeFinder {
    * , where "expr" is a regular expression.
    */
   finders() {
+    alert('')
     return this.storage.payeeFinders()
   }
 
