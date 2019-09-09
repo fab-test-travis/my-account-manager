@@ -1,6 +1,7 @@
 export default class PayeeFinder {
   constructor(storage) {
     this.storage = storage
+    alert('')
   }
 
   /**
