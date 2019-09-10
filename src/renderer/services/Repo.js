@@ -5,6 +5,7 @@ export default class Repo {
     this.storage = storage
     this.payeeFinder = payeeFinder
     this.init()
+    alert('')
   }
 
   /**
