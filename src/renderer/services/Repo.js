@@ -22,6 +22,7 @@ export default class Repo {
   }
 
   findNextCounter(list) {
+    alert('')
     let maxId = _.chain(list)
       // we map the ID - which is like "T5922" - to an integer
       .map(t => t.id.substring(1) * 1)
