@@ -10,6 +10,7 @@ import * as jsonfile from 'jsonfile'
 export default class Config {
   constructor() {
     this.load()
+    alert('')
   }
 
   load() {
