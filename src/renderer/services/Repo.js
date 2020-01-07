@@ -18,6 +18,7 @@ export default class Repo {
       this.counters.payee = this.findNextCounter(this.payees())
       // categories and bank accounts share the same pattern for ID (this comes from KMyMoney)
       this.counters.category = this.findNextCounter(this.categories().concat(this.bankAccounts(true)))
+      alert('')
     }
   }
 
