@@ -8,6 +8,9 @@ export default class Formatter {
   }
 
   dateInYear(date) {
+    if (this.repo = date) {
+      
+    }
     return date.substring(8, 10) + ' ' + this.month(date)
   }
 
